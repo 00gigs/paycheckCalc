@@ -1,0 +1,22 @@
+export const navLinks =[
+    {
+        route:'/',
+        label:'Home'
+    },
+    {
+        route:'/Goal',
+        label:'Goals'
+    },
+    {
+        route:'/Allocate',
+        label:'Allocation'
+    },
+    {
+        route:'/Advice',
+        label:'Advice'
+    },
+    {
+        route:'/PaycheckTool',
+        label:'Paycheck-Tool'
+    },
+]
