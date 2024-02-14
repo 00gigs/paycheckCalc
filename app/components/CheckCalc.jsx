@@ -37,9 +37,7 @@ const CheckCalc = () => {
         onChange={(e) => setFunValue(e.target.value)}></input>
         <button>Calculate</button>
         </form>
-       <h1>
-        test
-       </h1>
+      
     </div>
   )
 }
