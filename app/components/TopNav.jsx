@@ -36,11 +36,11 @@ const TopNav = () => {
           <div className="absolute right-2 w-min bg-gray-700 top-10 shadow-md rounded-md p-4 text-white text-center z-[99999]">
             {navLinks.map((link) => (
               <Link href={link.route}>
-                <li>{link.label}</li>
+                <li className="list-none">{link.label}</li>
               </Link>
             ))}
             <Link href={"/Login"}>
-              <li>Login</li>
+              <li className="list-none">Login</li>
             </Link>
           </div>
         </mobile>

@@ -1,8 +1,8 @@
 "use client";
 
-import { redirect } from "next/dist/server/api-utils";
+
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+
 
 
 const CheckCalc = () => {
@@ -11,7 +11,8 @@ const CheckCalc = () => {
   const [livingValue, setlivingValue] = useState(30);
   const [funValue, setFunValue] = useState(5);
   const [checkAmount, setCheckAmount] = useState("");
-
+  const [data,setData] = useState(null)
+  
   // Event handler for the 'Save' slider
   const Calculate = () => {
     const paycheckAmount = parseFloat(checkAmount);
@@ -19,31 +20,36 @@ const CheckCalc = () => {
       alert("Please enter a valid paycheck amount");
       return;
     }
-    const router = useRouter()
     const savingAmount = Math.round((saveValue / 100) * paycheckAmount);
     const investmentAmount = Math.round((investValue / 100) * paycheckAmount);
     const livingExpensesAmount = Math.round((livingValue / 100) * paycheckAmount);
     const funAmount = Math.round((funValue / 100) * paycheckAmount);
-    const res ={'Savings':savingAmount,'Investments':investmentAmount,'Living Expenses':livingExpensesAmount,'Fun':funAmount}
-      console.log(JSON.stringify(res,null,3))
-    router.push('/')
-
+    const res ={'Savings':`$ ${savingAmount}`,'Investments':`$ ${investmentAmount}`,'Living Expenses':`$ ${livingExpensesAmount}`,'Fun':`$ ${funAmount}`}
+    console.log(JSON.stringify(res,null,3))
+    setData(res)
+   
   };
 
+
   return (
-    <div className="flex justify-center">
-      <form className="flex flex-col gid grid-cols-2 justify-center items-center gap-2">
+    <div className="flex justify-center w-full">
+
+<div  className="flex flex-col w-full max-w-md px-4">
+    <h2 className="flex text-center font-bold">
+    ALLOCATION CALCULATOR
+    </h2>
+<form className="flex flex-col justify-center items-center gap-2">
         <div className="flex items-center bg-transparent">
           <span className="text-white p-3">$</span>
           <input
             name="checkAmount"
             type="number"
-            className="text-white text-center bg-transparent outline-none w-3/4 m-0"
+            className="text-white text-center bg-transparent outline-none w-3/4 m-0 "
             placeholder="Check amount"
             onChange={(e) => setCheckAmount(e.target.value)}
           />
         </div>
-        <span>Saving: {saveValue + "%"}</span>
+        <span className="font-light text-orange-300">Saving: {saveValue + "%"}</span>
         <input
           type="range"
           min="20"
@@ -52,7 +58,7 @@ const CheckCalc = () => {
           value={saveValue}
           onChange={(e) => setSaveValue(e.target.value)}
         ></input>
-        <span>Investments: {investValue + "%"}</span>
+        <span className="font-light text-orange-300">Investments: {investValue + "%"}</span>
         <input
           type="range"
           min="10"
@@ -61,7 +67,7 @@ const CheckCalc = () => {
           value={investValue}
           onChange={(e) => setInvestValue(e.target.value)}
         ></input>
-        <span>Living Expenses: {livingValue + "%"}</span>
+        <span className="font-light text-orange-300">Living Expenses: {livingValue + "%"}</span>
         <input
           type="range"
           min="30"
@@ -70,7 +76,7 @@ const CheckCalc = () => {
           value={livingValue}
           onChange={(e) => setlivingValue(e.target.value)}
         ></input>
-        <span>Fun: {funValue + "%"}</span>
+        <span className="font-light text-orange-300">Fun: {funValue + "%"}</span>
         <input
           type="range"
           min="5"
@@ -79,13 +85,21 @@ const CheckCalc = () => {
           value={funValue}
           onChange={(e) => setFunValue(e.target.value)}
         ></input>
-       
-        <button type="button" onClick={Calculate} className=" text-slate-400">
-       
-        
-          Calculate
-        </button>
+        <button type="button" onClick={Calculate} className=" text-slate-400">Calculate</button>
       </form>
+      <div className="flex px-3 align-center">
+  {data ? (
+    <ul className="whitespace-nowrap">
+      {Object.entries(data).map(([key, value]) => (
+        <li key={key} className="overflow-hidden text-ellipsis">
+          {`${key}: ${value}`}
+        </li>
+      ))}
+    </ul>
+  ) : 'Enter values and click Calculate.'}
+</div>
+
+</div>
     </div>
   );
 };
