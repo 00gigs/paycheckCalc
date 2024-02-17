@@ -18,7 +18,7 @@ const TopNav = () => {
       </Link>
       <ul className="flex gap-3 justify-center max-sm:hidden font-bold p-4">
         {navLinks.map((link) => (
-          <Link href={link.route}>
+          <Link  href={link.route}>
             <li>{link.label}</li>
           </Link>
         ))}

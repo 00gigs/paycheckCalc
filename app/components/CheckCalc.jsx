@@ -27,12 +27,12 @@ const CheckCalc = () => {
     const res ={'Savings':`$ ${savingAmount}`,'Investments':`$ ${investmentAmount}`,'Living Expenses':`$ ${livingExpensesAmount}`,'Fun':`$ ${funAmount}`}
     console.log(JSON.stringify(res,null,3))
     setData(res)
-   
   };
+  
 
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full mt-2 mb-3">
 
 <div  className="flex flex-col w-full max-w-md px-4">
     <h2 className="flex text-center font-bold">
@@ -43,8 +43,8 @@ const CheckCalc = () => {
           <span className="text-white p-3">$</span>
           <input
             name="checkAmount"
-            type="number"
-            className="text-white text-center bg-transparent outline-none w-3/4 m-0 "
+            type="text"
+            className="text-white text-center bg-transparent outline-none w-3/4 m-0"
             placeholder="Check amount"
             onChange={(e) => setCheckAmount(e.target.value)}
           />
@@ -87,7 +87,7 @@ const CheckCalc = () => {
         ></input>
         <button type="button" onClick={Calculate} className=" text-slate-400">Calculate</button>
       </form>
-      <div className="flex px-3 align-center text-center">
+      <div className="flex px-3 align-center text-center m-1">
   {data ? (
     <ul className="whitespace-nowrap">
       {Object.entries(data).map(([key, value]) => (
@@ -96,7 +96,7 @@ const CheckCalc = () => {
         </li>
       ))}
     </ul>
-  ) : 'Enter values and click Calculate.'}
+  ) : <span className="font-extralight">Enter values and click Calculate.</span>}
 </div>
 
 </div>
