@@ -8,16 +8,28 @@ const CheckCalc = () => {
     const [investValue, setInvestValue] = useState(10);
     const [livingValue, setlivingValue] = useState(30);
     const [funValue, setFunValue] = useState(5);
+    const [checkAmount, setCheckAmount] = useState('');
 
     // Event handler for the 'Save' slider
-    const handleSaveChange = (event) => {
-      setSaveValue(event.target.value);
+    const Calculate = () => {
+      const paycheckAmount = parseFloat(checkAmount);
+      if (!paycheckAmount) {
+        alert('Please enter a valid paycheck amount');
+        return;
+      }
+      
+      const savingAmount = Math.round((saveValue / 100) * paycheckAmount);
+      const investmentAmount = Math.round((investValue / 100) * paycheckAmount);
+      const livingExpensesAmount = Math.round((livingValue / 100) * paycheckAmount);
+      const funAmount = Math.round((funValue / 100) * paycheckAmount);
+  
+      alert(`Saving: ${savingAmount}, Investments: ${investmentAmount}, Living Expenses: ${livingExpensesAmount}, Fun: ${funAmount}`);
     };
 
   return (
     <div className='flex justify-center'>
         <form className='flex flex-col gid grid-cols-2 justify-center items-center gap-2'>
-        <input name='Check amount' type='number' className='text-black flex text-center' placeholder='Check amount'/>
+        <input name='Check amount' type='number' className='text-black flex text-center bg-transparent' placeholder='Check amount'/>
         <span>Saving: {saveValue + '%'}</span>
         <input type="range" min="20" max="30"  name="Slider" 
         value={saveValue} 
@@ -35,11 +47,12 @@ const CheckCalc = () => {
         <input type="range" min="5" max="10" name="Slider"
         value={funValue} 
         onChange={(e) => setFunValue(e.target.value)}></input>
-        <button>Calculate</button>
+        <button onClick={Calculate} className='border'>Calculate</button>
         </form>
       
     </div>
   )
+  
 }
 
 export default CheckCalc
