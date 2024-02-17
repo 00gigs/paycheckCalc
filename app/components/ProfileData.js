@@ -2,7 +2,7 @@ import React from 'react'
 
 const ProfileData = () => {
   return (
-    <div>ProfileData</div>
+    <div className="flex justify-center w-full">ProfileData</div>
   )
 }
 

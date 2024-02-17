@@ -87,7 +87,7 @@ const CheckCalc = () => {
         ></input>
         <button type="button" onClick={Calculate} className=" text-slate-400">Calculate</button>
       </form>
-      <div className="flex px-3 align-center">
+      <div className="flex px-3 align-center text-center">
   {data ? (
     <ul className="whitespace-nowrap">
       {Object.entries(data).map(([key, value]) => (
