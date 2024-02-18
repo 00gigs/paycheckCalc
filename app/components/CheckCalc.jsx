@@ -12,7 +12,8 @@ const CheckCalc = () => {
   const [funValue, setFunValue] = useState(5);
   const [checkAmount, setCheckAmount] = useState("");
   const [data,setData] = useState(null)
-  
+  const [amountSaved,setAmountSaved] = useState(0)
+  const [amountInvested,setAmountInvested] = useState(0)
   // Event handler for the 'Save' slider
   const Calculate = () => {
     const paycheckAmount = parseFloat(checkAmount);
@@ -27,7 +28,18 @@ const CheckCalc = () => {
     const res ={'Savings':`$ ${savingAmount}`,'Investments':`$ ${investmentAmount}`,'Living Expenses':`$ ${livingExpensesAmount}`,'Fun':`$ ${funAmount}`}
     console.log(JSON.stringify(res,null,3))
     setData(res)
+setAmountSaved(savingAmount+amountSaved)
+setAmountInvested(investmentAmount+amountInvested)
+setSaveValue(20)
+setInvestValue(10)
+setlivingValue(30)
+setFunValue(5)
   };
+  
+  const ClearTotals = () =>{
+    setAmountSaved(0)
+setAmountInvested(0)
+  }
   
 
 
@@ -35,9 +47,9 @@ const CheckCalc = () => {
     <div className="flex justify-center w-full mt-2 mb-3">
 
 <div  className="flex flex-col w-full max-w-md px-4">
-    <h2 className="flex text-center font-bold">
+    <h1 className="flex justify-center  text-center font-bold">
     ALLOCATION CALCULATOR
-    </h2>
+    </h1>
 <form className="flex flex-col justify-center items-center gap-2">
         <div className="flex items-center bg-transparent">
           <span className="text-white p-3">$</span>
@@ -87,11 +99,11 @@ const CheckCalc = () => {
         ></input>
         <button type="button" onClick={Calculate} className=" text-slate-400">Calculate</button>
       </form>
-      <div className="flex px-3 align-center text-center m-1">
+      <div className="flex px-3 align-center justify-center text-center m-1">
   {data ? (
-    <ul className="whitespace-nowrap">
+    <ul className="whitespace-nowrap ">
       {Object.entries(data).map(([key, value]) => (
-        <li key={key} className="overflow-hidden text-ellipsis">
+        <li key={key} className="overflow-hidden text-ellipsis ">
           {`${key}: ${value}`}
         </li>
       ))}
@@ -99,6 +111,17 @@ const CheckCalc = () => {
   ) : <span className="font-extralight">Enter values and click Calculate.</span>}
 </div>
 
+<div className="flex flex-col items-center w-full space-y-4 mt-1 mb-3 border">
+      <div className="flex text-center font-bold">Totals</div>
+      <div className="text-center items-center">
+        <div >
+          <h1 className="text-green-600">money saved $:{amountSaved}</h1>
+          <h1 className="text-green-600">Investments $:{amountInvested}</h1>
+          <button type="button mt-1" onClick={ClearTotals}>Clear</button>
+        </div>
+        {/* Return users financial profile , (integrate AI to make better financial decisions ) */}
+      </div>
+    </div>
 </div>
     </div>
   );

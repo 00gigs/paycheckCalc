@@ -1,21 +1,19 @@
 import Articles from "./components/Articles";
 import CheckCalc from "./components/CheckCalc";
 import Footer from "./components/Footer";
-import ProfileData from "./components/ProfileData";
+
 import Stock from "./components/stock";
 
 export default function Home() {
   return (
     <div>
-      <hr className="h-1 bg-slate-400 border"></hr>
+      <div className="h-1 bg-slate-800 w-full"></div>
       <CheckCalc />
-      <hr className="h-1 bg-slate-400 border"></hr>
-      <ProfileData />
-      <hr className="h-1 bg-slate-400 border"></hr>
+      <div className="h-1 bg-slate-800 w-full"></div>
       <Articles />
-      <hr className="h-1 bg-slate-400 border"></hr>
+      <div className="h-1 bg-slate-800 w-full"></div>
       <Stock />
-      <hr className="h-1 bg-slate-400 border"></hr>
+      <div className="h-1 bg-slate-800 w-full"></div>
       <Footer/>
     </div>
   );

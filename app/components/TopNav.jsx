@@ -12,7 +12,7 @@ const TopNav = () => {
   return (
     <div className="flex">
       <Link href={"/"}>
-        <h1 className="text-4xl underline underline-offset-8 py-3 m-2 text-orange-300">
+        <h1 className="text-4xl underline underline-offset-8 py-3 m-2 text-orange-400">
           SMART SAVE
         </h1>
       </Link>
