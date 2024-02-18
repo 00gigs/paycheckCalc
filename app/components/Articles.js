@@ -14,7 +14,7 @@ useEffect(() => {
       );
       const data = await response.json();
       console.log(data);
-      setNewsData(data.slice(0,10))
+      setNewsData(data.slice(0,30))
     } catch (error) {
       console.error("Error fetching market news:", error);
     }

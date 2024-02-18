@@ -97,7 +97,7 @@ setAmountInvested(0)
           value={funValue}
           onChange={(e) => setFunValue(e.target.value)}
         ></input>
-        <button type="button" onClick={Calculate} className=" text-slate-400">Calculate</button>
+        <button type="button" onClick={Calculate} className=" text-slate-400 hover:text-orange-300">Calculate</button>
       </form>
       <div className="flex px-3 align-center justify-center text-center m-1">
   {data ? (
@@ -112,12 +112,12 @@ setAmountInvested(0)
 </div>
 
 <div className="flex flex-col items-center w-full space-y-4 mt-1 mb-3 border">
-      <div className="flex text-center font-bold">Totals</div>
+      <div className="flex text-center font-bold">Investing Totals</div>
       <div className="text-center items-center">
         <div >
           <h1 className="text-green-600">money saved $:{amountSaved}</h1>
           <h1 className="text-green-600">Investments $:{amountInvested}</h1>
-          <button type="button mt-1" onClick={ClearTotals}>Clear</button>
+          <button type="button mt-1" className=" text-slate-400 hover:text-red-400" onClick={ClearTotals}>Clear</button>
         </div>
         {/* Return users financial profile , (integrate AI to make better financial decisions ) */}
       </div>
