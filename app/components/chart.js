@@ -1,14 +1,15 @@
-'use client'
+"use client";
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-
+import ChartAPIKEY from "../ServerOps/apiKey";
 const ChartDisplay = () => {
   const chartContainerRef = useRef(null); // Create a ref for the chart container
   const chartInstanceRef = useRef(null); // Ref to store the chart instance
 
   const getTics = async () => {
+    const tic = "NVDA";
     const res = await fetch(
-      "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&apikey=demo"
+      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=${ChartAPIKEY}`
     );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
@@ -23,7 +24,7 @@ const ChartDisplay = () => {
     }
     const convertedData = Object.entries(seriesData).map(([date, values]) => ({
       time: date,
-      value: parseFloat(values["5. adjusted close"]), // Convert string to float for numerical operations
+      value: parseFloat(values["4. close"]), // Convert string to float for numerical operations
     }));
     convertedData.sort(
       (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
@@ -64,7 +65,12 @@ const ChartDisplay = () => {
     };
   }, []); // Empty dependency array ensures this runs only once after initial render
 
-  return <div ref={chartContainerRef}></div>; // Use ref for the chart container
+  return (
+    <div>
+      <span>NVDA</span>
+      <div ref={chartContainerRef}></div>
+    </div>
+  ); // Use ref for the chart container
 };
 
 export default ChartDisplay;

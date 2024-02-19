@@ -2,8 +2,8 @@ import React from 'react'
 
 const Footer = () => {
   return (
-        <div className="flex flex-col items-center w-full    bg-slate-800">
-    <div className="text-center items-center gap-10 grid-cols-3 grid">
+        <div className="flex flex-col items-center w-full    bg-slate-700">
+    <div className=" h-7 text-center items-center gap-10 grid-cols-3 grid">
       <a href='#'>
       <img width="50" height="50" src="https://img.icons8.com/ios/50/twitterx--v1.png" alt="twitterx--v1"/>
       </a>
