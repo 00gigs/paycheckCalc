@@ -5,9 +5,9 @@ import ChartAPIKEY from "../ServerOps/apiKey";
 const ChartDisplay = () => {
   const chartContainerRef = useRef(null); // Create a ref for the chart container
   const chartInstanceRef = useRef(null); // Ref to store the chart instance
+  const tic = "NVDA";
 
   const getTics = async () => {
-    const tic = "NVDA";
     const res = await fetch(
       `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=${ChartAPIKEY}`
     );
@@ -67,7 +67,7 @@ const ChartDisplay = () => {
 
   return (
     <div>
-      <span>NVDA</span>
+      <span>{tic}</span>
       <div ref={chartContainerRef}></div>
     </div>
   ); // Use ref for the chart container
