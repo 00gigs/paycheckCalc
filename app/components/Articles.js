@@ -8,6 +8,7 @@ const [newsData,setNewsData] = useState([])
 
 useEffect(() => {
   const fetching = async () => {
+    
     try {
       const response = await fetch(
         `https://finnhub.io/api/v1/news?token=${ApiKEy}&category=general`

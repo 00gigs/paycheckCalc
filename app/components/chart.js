@@ -1,15 +1,17 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
-import ChartAPIKEY from "../ServerOps/apiKey";
+// import { ChartAPIKEY } from "../ServerOps/apiKey";${ChartAPIKEY}
+
 const ChartDisplay = () => {
   const chartContainerRef = useRef(null); // Create a ref for the chart container
   const chartInstanceRef = useRef(null); // Ref to store the chart instance
-  const tic = "NVDA";
+  const tic = "IBM";
 
   const getTics = async () => {
     const res = await fetch(
-      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=${ChartAPIKEY}`
+      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=demo`
+      //API rate LIMIT is 25 requests per day
     );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
