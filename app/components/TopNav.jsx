@@ -22,8 +22,8 @@ const TopNav = () => {
             <li>{link.label}</li>
           </Link>
         ))}
-         <Link href={"/Login"}>
-              <li className="list-none">Login</li>
+         <Link href={"/Signup"}>
+              <li className="list-none">Signup</li>
             </Link>
       </ul>
 
@@ -42,7 +42,7 @@ const TopNav = () => {
                 <li className="list-none">{link.label}</li>
               </Link>
             ))}
-            <Link href={"/Login"}>
+            <Link href={"/Signup"}>
               <li className="list-none">Login</li>
             </Link>
           </div>
