@@ -12,7 +12,7 @@ const router = useRouter()
   const [form, setForm] = useState({
     name: "", // Changed from User to name
     email: "", // Changed from Email to email
-    Password: "", // Keep Password as is
+    password: "", // Keep Password as is
   });
 
   const handleChange = (e)=>{
@@ -25,17 +25,21 @@ const router = useRouter()
 
   const handleSubmit= async (e) => {
     e.preventDefault()
-    const res = await fetch("/app/api/account",{
+    const res = await fetch("/api/account",{
       method:"POST",
       headers:{"Content-Type": "application/json",},
-      body: JSON.stringify({form}),
+      // Wrapping ({form}) in curly braces will result in error mongoDB expects 
+      // a non-nested object(obj inside another {form: { name: "", email: "", Password: "" }}) 
+      // payload structure  👇🏻
+      body: JSON.stringify(form),
     })
 if(!res.ok){
 throw new Error('Failed to create user')
 }
-
+alert('account created sucessfully')//replace with toast notifications
 router.refresh()
 router.push('/')
+
 
   }
 
@@ -68,7 +72,7 @@ router.push('/')
             <input
               onChange={handleChange}
               type="password"
-              name="Password"
+              name="password"
               placeholder="Password"
               className="rounded text-center  bg-transparent"
               value={form.Password}

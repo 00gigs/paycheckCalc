@@ -3,7 +3,7 @@ import  mongoose, { Schema }  from "mongoose";
 
 mongoose.connect(process.env.MONGODB_URI)
 mongoose.Promise = global.Promise
-
+//json schema and inputs are case sensitive make sure the back-end schema CASE matches front-end input names
 const accountSchema = new Schema({
     name:{
     type:String,
@@ -13,7 +13,7 @@ const accountSchema = new Schema({
     type:String,
         required:true,
 },
-    Password:{
+    password:{
     type:String,
         required:true,
 },
@@ -27,16 +27,5 @@ const accountSchema = new Schema({
 
 
 const account = mongoose.models.account || mongoose.model("account",accountSchema)
+//models have to be export default !!!!
 export default account
-
-// const accountPostSchema = new Schema({
-//     name:{
-//     type:String,
-// },
-//     post:{
-//     type:String,
-//         required:true,
-// },
-
-// },
-// {timestamps:true})
