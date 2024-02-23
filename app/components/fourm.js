@@ -5,6 +5,7 @@ export const Fourm = () => {
 
 const [formData,setFormData] = useState({
   postBody:"",
+  formType: "forumPost",
 })
 
 const changeHandle = (e) =>{
@@ -56,7 +57,7 @@ console.log(formData)
             //rounded-lg text-slate-300 bg-transparent
             type="text"
             placeholder="Type message here"
-            value={formData.value}
+            value={formData.postBody}
             onChange={changeHandle}
           />
         </div>

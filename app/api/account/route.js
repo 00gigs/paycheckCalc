@@ -21,10 +21,17 @@ export async function POST(req){
     console.log('POST RAN')
 //how to use  different model methods for different forms 
     try {
+
         const body = await req.json()
-        const forumPost = body
-        await post.create(forumPost)
-        return NextResponse.json({message:`Post made ${forumPost}`,},{status:201})
+        switch(body.formType){
+            case 'forumPost':
+            await post.create(body)
+            break;
+            default:
+                throw new Error('Unknown form type');
+        }
+        
+        return NextResponse.json({message:`Post made ${body.postBody}`,},{status:201})
     } catch (error) {
         return NextResponse.json({message:'error',error},{status:500})
     }
