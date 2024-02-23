@@ -11,8 +11,7 @@ useEffect(() => {
     
     try {
       const response = await fetch(
-        `https://finnhub.io/api/v1/news?token=${ApiKEy}&category=general`
-      );
+        `https://finnhub.io/api/v1/news?token=${ApiKEy}&category=general` ); 
       const data = await response.json();
       console.log(data);
       setNewsData(data.slice(0,30))

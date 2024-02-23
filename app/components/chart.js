@@ -69,8 +69,8 @@ const ChartDisplay = () => {
 
   return (
     <div>
-      <span>{tic}</span>
-      <div ref={chartContainerRef}></div>
+      <span className=" border-4 border-orange-300 rounded-lg p-1 font-medium">{tic}</span>
+      <div className="mt-3" ref={chartContainerRef}></div>
     </div>
   ); // Use ref for the chart container
 };

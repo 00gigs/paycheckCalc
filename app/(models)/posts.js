@@ -5,9 +5,6 @@ mongoose.Promise = global.Promise
 
 
 const postSchema = new Schema({
-    account:{
-    type:String,
-},
     postBody:{
     type:String,
         required:true,
