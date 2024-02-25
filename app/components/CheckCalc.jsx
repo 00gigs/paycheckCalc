@@ -35,7 +35,12 @@ setInvestValue(10)
 setlivingValue(30)
 setFunValue(5)
   };
-  
+  //👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻
+//use  a onSubmission inside of calculate button to be able to store
+// (savingAmount) & (investmentAmount) data in a form to be submitted as POST request in [route.js]file 
+//ALSO make a mongoose model schema in the {models} folder for the (savingAmount) & (investmentAmount) 
+//to be used in the [route.js]file 
+
   const ClearTotals = () =>{
     setAmountSaved(0)
 setAmountInvested(0)
@@ -62,6 +67,7 @@ setAmountInvested(0)
           />
         </div>
         <span className="font-light text-orange-300">Saving: {saveValue + "%"}</span>
+       {/*style inputs to be in 2 columns with 2 inputs in each column */}
         <input
           type="range"
           min="20"
@@ -97,6 +103,8 @@ setAmountInvested(0)
           value={funValue}
           onChange={(e) => setFunValue(e.target.value)}
         ></input>
+
+     
         <button type="button" onClick={Calculate} className=" text-slate-400 hover:text-orange-300">Calculate</button>
       </form>
       <div className="flex px-3 align-center justify-center text-center m-1">

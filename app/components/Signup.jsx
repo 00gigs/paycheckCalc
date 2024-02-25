@@ -1,18 +1,30 @@
-"use client"; import React from "react";
+"use client"; 
+import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 
-const Signup = () => {
-const router = useRouter()
+
+
+
+const Signup =  () => {
+  const router = useRouter()
+  
+ 
 
   //empty form data
   const [form, setForm] = useState({
-    name: "", // Changed from User to name
-    email: "", // Changed from Email to email
-    password: "", // Keep Password as is
+    //make sure form input states are uniform across app
+    name: "", 
+    email: "", 
+    password: "", 
+    formType: "user",
   });
+
+  
+
+ 
 
   const handleChange = (e)=>{
     const { name, value } = e.target;
@@ -37,7 +49,7 @@ throw new Error('Failed to create user')
 }
 alert('account created sucessfully')//replace with toast notifications
 router.refresh()
-router.push('/')
+router.push('/Signin')
 
 
   }
@@ -74,7 +86,7 @@ router.push('/')
               name="password"
               placeholder="Password"
               className="rounded text-center  bg-transparent"
-              value={form.Password}
+              value={form.password}
             />
             <button type="submit" className="hover:text-green-200">
               Register
