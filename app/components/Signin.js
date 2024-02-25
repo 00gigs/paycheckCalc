@@ -2,41 +2,75 @@
 import React from "react";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const Signin = () => {
+const router = useRouter()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    //make sure form input states are uniform across app
+    email: "",
+    password: "",
+    formType: "login",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch("/api/account", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // Wrapping ({form}) in curly braces will result in error mongoDB expects
+      // a non-nested object(obj inside another {form: { name: "", email: "", Password: "" }})
+      // payload structure  👇🏻
+      body: JSON.stringify(form),
+    });
+    if (!res.ok) {
+      throw new Error("Failed to Signin user");
+    }
+
+    alert("SignIn successful"); //replace with toast notifications
+    router.refresh();
+    router.push("/");
+  };
 
   return (
     <div>
       <div className="flex justify-center h-screen items-center ">
         <div className="border-spacing-2 m-3 border-4 p-4 border-orange-300 md:h-80 md:w-full ">
-          <form name="form" className="flex flex-col gap-5 md:text-2xl">
+          <form
+            name="form"
+            className="flex flex-col gap-5 md:text-2xl"
+            method="post"
+            onSubmit={handleSubmit}
+          >
             <input
-              // onChange={handleChange}
+              required
+              onChange={handleChange}
               type="email"
-              name="Email"
+              name="email"
               placeholder="Email"
               className="rounded text-center bg-transparent"
-              // value={form.email}
+              value={form.email}
             />
             <input
-              // onChange={handleChange}
+              required
+              onChange={handleChange}
               type="password"
-              name="Password"
+              name="password"
               placeholder="Password"
               className="rounded text-center  bg-transparent"
-              //  value={form.email}
+              value={form.password}
             />
             <button type="submit" className="hover:text-green-200">
               Signin
             </button>
-            {error && (
-              <div className="rounded text-center bg-transparent text-red-400 font-bold">
-                {error}
-              </div>
-            )}
             <Link href={"/Signup"}>
               <div className="hover:text-3xl text-center underline">
                 Not Registered? SignUp

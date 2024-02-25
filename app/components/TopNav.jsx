@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
+
+
 const TopNav = () => {
+  
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const mobileMenuHandler = () => {
     setOpenMobileMenu(!openMobileMenu);

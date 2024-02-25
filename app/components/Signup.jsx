@@ -47,6 +47,8 @@ const Signup =  () => {
 if(!res.ok){
 throw new Error('Failed to create user')
 }
+
+
 alert('account created sucessfully')//replace with toast notifications
 router.refresh()
 router.push('/Signin')
@@ -65,6 +67,7 @@ router.push('/Signin')
             onSubmit={handleSubmit}
           >
             <input
+              required
               onChange={handleChange}
               type="text"
               name="name"
@@ -73,6 +76,7 @@ router.push('/Signin')
               value={form.name}
             />
             <input
+              required
               onChange={handleChange}
               type="email"
               name="email"
@@ -81,6 +85,7 @@ router.push('/Signin')
               value={form.email}
             />
             <input
+              required
               onChange={handleChange}
               type="password"
               name="password"
