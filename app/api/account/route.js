@@ -63,6 +63,7 @@ export async function POST(req){
 }
 //used _ in front of req to ignore declare error 
 export async function GET(req){
+    //edit  find method to return most recent 
     try {
         const posts = await post.find(); // Fetch all posts
         return NextResponse.json(posts, { status: 200 });

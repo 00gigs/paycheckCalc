@@ -9,7 +9,7 @@ const [formData,setFormData] = useState({
 })
 
 const [posts, setPosts] = useState([]); // State to store posts
-
+// make it render every post that gets added / able to see realtime update render 
 useEffect(() => {
   const fetchPosts = async () => {
     const response = await fetch('/api/account',{
