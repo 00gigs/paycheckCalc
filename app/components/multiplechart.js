@@ -2,12 +2,12 @@ import React from 'react';
 import ChartDisplay from '../components/chart' // Adjust the import path as necessary
 
 const MultiChartDisplay = () => {
-  const tics = ["IBM", "AAPL", "GOOGL", "MSFT", "AMZN", "FB"]; // Example ticker symbols
+  const tics = ["", "", "", "", "", "", "",""]; // Example ticker symbols
 
   return (
-    <div className='flex gap-6  overflow-x-scroll'>
+    <div className='flex gap-6  overflow-x-scroll h-55'>
       {tics.map((tic, index) => (
-        <div key={index} className="chart-container text-center mt-3 mb-10">
+        <div key={index} className="chart-container text-center mt-9 mb-8">
           <ChartDisplay tic={tic} />
         </div>
       ))}

@@ -1,5 +1,5 @@
 'use client'
-import React ,{ useState }from "react";
+import React ,{ useState,useEffect }from "react";
 
 export const Fourm = () => {
 
@@ -7,6 +7,27 @@ const [formData,setFormData] = useState({
   postBody:"",
   formType: "forumPost",
 })
+
+const [posts, setPosts] = useState([]); // State to store posts
+
+useEffect(() => {
+  const fetchPosts = async () => {
+    const response = await fetch('/api/account',{
+      method:'GET',
+      headers:{"Content-Type": "application/json",},
+    });
+    if (response.ok) {
+      const posts = await response.json();
+      setPosts(posts);
+    } else {
+      // Handle errors
+      console.error('Failed to fetch posts:', response.statusText);
+    }
+  };
+
+  fetchPosts();
+}, []);
+
 
 const changeHandle = (e) =>{
   const {name,value } = e.target
@@ -66,7 +87,12 @@ console.log(formData)
       {/* users chat goes down below  👇🏻 */}
       <div className = "flex flex-col items-center space-x-4">
         <span className=" italic font-light">@FantasyFinancial1997</span>
-        <p>Is Bitcoin the future ?</p>
+        {/* <p>Is Bitcoin the future ?</p> */}
+        {posts.map((post, index) => (
+        <div key={index} className="flex flex-col items-center space-x-4">
+          <p>{post.postBody}</p>
+        </div>
+      ))}
         <span className="font-light text-sm">-1:20pm</span>
       </div>
     </div>

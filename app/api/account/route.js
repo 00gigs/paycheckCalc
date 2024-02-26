@@ -28,7 +28,7 @@ export async function POST(req){
         const body = await req.json()
         switch(body.formType){
             case 'forumPost':
-            await post.create(body)
+            const newPost= await post.create(body)
             return NextResponse.json({ message: `Post made successfully`, newPost }, { status: 201 });
             case 'user':
                 const hashed = await bcryptjs.hash(body.password,10)
@@ -59,5 +59,14 @@ export async function POST(req){
        
     } catch (error) {
         return NextResponse.json({message:'error',error},{status:500})
+    }
+}
+//used _ in front of req to ignore declare error 
+export async function GET(req){
+    try {
+        const posts = await post.find(); // Fetch all posts
+        return NextResponse.json(posts, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({message:'error',error},{status:500});
     }
 }
