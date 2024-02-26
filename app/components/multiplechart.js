@@ -5,9 +5,9 @@ const MultiChartDisplay = () => {
   const tics = ["IBM", "AAPL", "GOOGL", "MSFT", "AMZN", "FB"]; // Example ticker symbols
 
   return (
-    <div className='flex gap-6 mb-4'>
+    <div className='flex gap-6  overflow-x-scroll'>
       {tics.map((tic, index) => (
-        <div key={index} className="chart-container text-center mt-3">
+        <div key={index} className="chart-container text-center mt-3 mb-10">
           <ChartDisplay tic={tic} />
         </div>
       ))}
