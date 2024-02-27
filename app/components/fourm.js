@@ -89,11 +89,12 @@ console.log(formData)
         <span className=" italic font-light">@FantasyFinancial1997</span>
         {/* <p>Is Bitcoin the future ?</p> */}
         {posts.map((post, index) => (
-        <div key={index} className="flex flex-col items-center space-x-4">
+        <div key={index} className="flex flex-col items-center space-x-4 m-8 ">
+    {post.account && <span className="italic font-light">@{post.account.name}</span>}
           <p>{post.postBody}</p>
+          <span className="font-light text-sm text-center">{new Date(post.createdAt).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'numeric', year:'2-digit'})}</span>
         </div>
       ))}
-        <span className="font-light text-sm">-1:20pm</span>
       </div>
     </div>
   );

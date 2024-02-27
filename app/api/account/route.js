@@ -1,4 +1,4 @@
-// import account from "../../(models)/user"
+
 import account from "@/app/(models)/user"
 import post from  "../../(models)/posts"
 import {NextResponse} from 'next/server'
@@ -65,8 +65,14 @@ export async function POST(req){
 export async function GET(req){
     //edit  find method to return most recent 
     try {
-        const posts = await post.find(); // Fetch all posts
+        const posts = await post.find().populate('account');
+
+        console.log(JSON.stringify(posts, null, 2));
+
+        // Now, each post in the `posts` array should have an `account` object with `name` and `email`
+        // You can directly return the modified posts array with populated account information
         return NextResponse.json(posts, { status: 200 });
+        
     } catch (error) {
         return NextResponse.json({message:'error',error},{status:500});
     }

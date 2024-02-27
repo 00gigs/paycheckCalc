@@ -9,7 +9,10 @@ const postSchema = new Schema({
     type:String,
         required:true,
 },
-
+    account: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'account', // Make sure this matches the name used in mongoose.model("account", accountSchema)
+}
 },
 
 {
