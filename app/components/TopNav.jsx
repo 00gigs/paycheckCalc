@@ -4,23 +4,23 @@ import React, { useState,useEffect } from "react";
 import Link from "next/link";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
-
+import { useRouter } from "next/navigation";
 
 
 
 const TopNav = () => {
-
+  const router = useRouter()
 
   const [username,setUsername] = useState('')
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   
   useEffect(() => {
-    const token = localStorage.getItem('token'); // Move this inside useEffect
+    const token = localStorage.getItem('token'); 
     if (token) {
       try {
-        const decoded = jwtDecode(token); // Ensure jwtDecode is correctly used
-        setUsername(decoded.userId_name.name || 'User'); // Assuming the token correctly includes userId_name
+        const decoded = jwtDecode(token); 
+        setUsername(decoded.userId_name.name || 'User'); //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
       } catch (error) {
         console.error('Error decoding token:', error);
       }
@@ -35,7 +35,12 @@ const TopNav = () => {
    */
 
 
-
+const logoutUser = () => {
+  localStorage.removeItem('token'); // Remove the token
+  setUsername(''); // Reset username to update UI
+  // Optionally, redirect the user or perform additional cleanup
+router.push("/Signin")
+};
 
   const mobileMenuHandler = () => {
     setOpenMobileMenu(!openMobileMenu);
@@ -57,10 +62,14 @@ const TopNav = () => {
           </Link>
         ))}
         {username ? (
+          <>
           <li className="list-none">Hello, {username} </li>
+          <li className="list-none" onClick={logoutUser} style={{cursor: 'pointer'}}>Logout</li>
+          </>
+
         ) : (
-          <Link href={"/Signup"}>
-            <li className="list-none">Signup</li>
+          <Link href={"/Signin"}>
+            <li className="list-none">Login</li>
           </Link>
         )}
       </ul>
@@ -81,10 +90,14 @@ const TopNav = () => {
               </Link>
             ))}
             {username ? (
-          <li className="list-none">Hello, {username} </li>
+      <>
+  <li className="list-none" onClick={logoutUser}>Logout</li>
+      <li className="list-none">Hello, {username} </li>
+      </>
+             
         ) : (
-          <Link href={"/Signup"}>
-            <li className="list-none">Signup</li>
+          <Link href={"/Signin"}>
+            <li className="list-none">Login</li>
           </Link>
         )}
           </div>
