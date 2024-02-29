@@ -8,10 +8,10 @@ const postSchema = new Schema({
     postBody:{
     type:String,
         required:true,
+
 },
-    account: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'account', // Make sure this matches the name used in mongoose.model("account", accountSchema)
+    name: {
+    type: String,
 }
 },
 

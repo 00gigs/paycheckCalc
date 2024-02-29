@@ -35,6 +35,10 @@ const router = useRouter()
       throw new Error("Failed to Signin user");
     }
 
+    const data = await res.json();
+
+    localStorage.setItem('token', data.token);
+
     alert("SignIn successful"); //replace with toast notifications
     router.refresh();
     router.push("/");
