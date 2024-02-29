@@ -3,10 +3,30 @@ import React ,{ useState,useEffect }from "react";
 
 export const Fourm = () => {
 
+  
+//   const user = () =>{
+
+//   const token = localStorage.getItem('token'); 
+//     if (token) {
+//       try {
+//         const decoded = jwtDecode(token); 
+//         const userName = (decoded.userId_name.name || 'User')
+//         return userName
+// }catch(error){
+//   console.log('error decodeJWT:',error)
+// }
+//     }
+//   }
+
+//   console.log(user)
+const userAccount_post = localStorage.getItem('user')
+
 const [formData,setFormData] = useState({
   postBody:"",
+  name:userAccount_post,
   formType: "forumPost",
 })
+
 
 const [posts, setPosts] = useState([]); // State to store posts
 // make it render every post that gets added / able to see realtime update render 
@@ -47,6 +67,9 @@ e.preventDefault()
       // payload structure  👇🏻
       body: JSON.stringify(formData),
     })
+
+    console.log(userAccount_post)
+    
 if(!res.ok){
 throw new Error('Failed to create post')
 }else{
@@ -63,8 +86,9 @@ console.log(formData)
       method="post">
         <h1 className="font-bold mt-2 mb-4">Finance Forum</h1>
       <div className="flex items-center space-x-4">
-        <button className="flex justify-center items-center w-7 h-7 bg-orange-300 rounded-xl hover:scale-110 transition-transform">
+        <button className="flex justify-center items-center  ">
           <img
+          className=" w-9 ml-4 h-9 rounded-xl hover:scale-110 transition-transform"
             width="48"
             height="48"
             src="https://img.icons8.com/color/48/filled-plus-2-math.png"
@@ -77,8 +101,17 @@ console.log(formData)
             className="w-full rounded-lg text-slate-300 bg-transparent  px-4 py-2"
             //rounded-lg text-slate-300 bg-transparent
             type="text"
-            placeholder="Type message here"
+            placeholder="Type message"
             value={formData.postBody}
+            onChange={changeHandle}
+          />
+          <input
+            name="postBody"
+            className="hidden"
+          
+            type="text"
+            placeholder="Type message"
+            value={formData.name}
             onChange={changeHandle}
           />
         </div>
@@ -86,11 +119,11 @@ console.log(formData)
       </form>
       {/* users chat goes down below  👇🏻 */}
       <div className = "flex flex-col items-center space-x-4">
-        <span className=" italic font-light">@FantasyFinancial1997</span>
+        <span className=" italic font-light bg-orange-400">@FantasyFinancial1997</span>
         {/* <p>Is Bitcoin the future ?</p> */}
         {posts.map((post, index) => (
         <div key={index} className="flex flex-col items-center space-x-4 m-8 ">
-    {post.account && <span className="italic font-light">@{post.account.name}</span>}
+    {<span className="italic font-light">@ {post.name}</span>}
           <p>{post.postBody}</p>
           <span className="font-light text-sm text-center">{new Date(post.createdAt).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'numeric', year:'2-digit'})}</span>
         </div>

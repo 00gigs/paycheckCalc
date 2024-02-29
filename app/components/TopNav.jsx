@@ -20,7 +20,8 @@ const TopNav = () => {
     if (token) {
       try {
         const decoded = jwtDecode(token); 
-        setUsername(decoded.userId_name.name || 'User'); //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
+        setUsername(decoded.userId_name.name || 'User');
+        localStorage.setItem('user', decoded.userId_name.name) //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
       } catch (error) {
         console.error('Error decoding token:', error);
       }

@@ -66,7 +66,7 @@ export async function GET(req){
     //edit  find method to return most recent 
     try {
         const posts = await post.find();
-
+    
         console.log(JSON.stringify(posts, null, 2));
 
         // Now, each post in the `posts` array should have an `account` object with `name` and `email`
