@@ -38,6 +38,7 @@ const router = useRouter()
     const data = await res.json();
 
     localStorage.setItem('token', data.token);
+    window.dispatchEvent(new Event('tokenChanged'));
 
     alert("SignIn successful"); //replace with toast notifications
     router.refresh();
