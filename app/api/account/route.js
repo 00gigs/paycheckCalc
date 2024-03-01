@@ -4,6 +4,7 @@ import post from  "../../(models)/posts"
 import {NextResponse} from 'next/server'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken';
+import moneyinfo from "@/app/(models)/money";
 
 // export async function account(req){
 //     // console.log('POST RAN')
@@ -37,6 +38,23 @@ export async function POST(req){
                         password:hashed,}
                         )
             return NextResponse.json({message:`account made successfully${newAccount}`,},{status:201})
+            case 'userMoney':
+
+try {
+
+    const moneyEntry = await moneyinfo.create(body)   
+    console.log('money entry:', moneyEntry)  
+    console.log('moneyBody:', body)  
+    
+    return NextResponse.json({message:`savings/invesment  information ${moneyEntry}`,},{status:201})
+} catch (dbError) {
+    console.error('Error creating money entry:', dbError);
+        return NextResponse.json({ message: 'error', error: dbError.message || 'Database operation failed' }, { status: 500 });
+}
+
+
+
+
             case 'login':
                 try {
                  

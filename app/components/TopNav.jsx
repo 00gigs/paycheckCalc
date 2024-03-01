@@ -92,10 +92,9 @@ router.push("/Signin")
             ))}
             {username ? (
       <>
-  <li className="list-none" onClick={logoutUser}>Logout</li>
-      <li className="list-none">Hello, {username} </li>
-      </>
-             
+        <li className="list-none" onClick={logoutUser}>Logout</li>
+            <li className="list-none">Hello, {username} </li>
+      </> 
         ) : (
           <Link href={"/Signin"}>
             <li className="list-none">Login</li>

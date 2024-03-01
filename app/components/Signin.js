@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 const Signin = () => {
 const router = useRouter()
 
+
+
+
   const [form, setForm] = useState({
     //make sure form input states are uniform across app
     email: "",
@@ -20,6 +23,10 @@ const router = useRouter()
       [name]: value,
     }));
   };
+
+  /*use handleSubmit in checkCalc to send a post req with body containing amount saved and amount invested along with the current user.
+you can use useState and form as const
+  */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +58,7 @@ const router = useRouter()
         <div className="border-spacing-2 m-3 border-4 p-4 border-orange-300 md:h-80 md:w-full">
           <form
             name="form"
-            className="flex flex-col gap-5 md:text-2xl sm:text-sm w-40"
+            className="flex flex-col gap-5 md:text-2xl sm:text-sm w-40 md:w-full"
             method="post"
             onSubmit={handleSubmit}
           >
@@ -61,7 +68,7 @@ const router = useRouter()
               type="email"
               name="email"
               placeholder="Email"
-              className="rounded text-center bg-transparent"
+              className="rounded text-center  text-black "
               value={form.email}
             />
             <input
@@ -70,7 +77,7 @@ const router = useRouter()
               type="password"
               name="password"
               placeholder="Password"
-              className="rounded text-center  bg-transparent"
+              className="rounded text-center  text-black"
               value={form.password}
             />
             <button type="submit" className="hover:text-green-200">

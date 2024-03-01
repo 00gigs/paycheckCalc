@@ -3,22 +3,7 @@ import React ,{ useState,useEffect }from "react";
 
 export const Fourm = () => {
 
-  
-//   const user = () =>{
 
-//   const token = localStorage.getItem('token'); 
-//     if (token) {
-//       try {
-//         const decoded = jwtDecode(token); 
-//         const userName = (decoded.userId_name.name || 'User')
-//         return userName
-// }catch(error){
-//   console.log('error decodeJWT:',error)
-// }
-//     }
-//   }
-
-//   console.log(user)
 const userAccount_post = localStorage.getItem('user')
 
 const [formData,setFormData] = useState({
@@ -29,7 +14,11 @@ const [formData,setFormData] = useState({
 
 
 const [posts, setPosts] = useState([]); // State to store posts
-// make it render every post that gets added / able to see realtime update render 
+// make it render every post that gets added / able to see realtime update as posts get added without having to refresh  
+
+//👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
+
+
 useEffect(() => {
   const fetchPosts = async () => {
     const response = await fetch('/api/account',{
@@ -106,9 +95,9 @@ console.log(formData)
             onChange={changeHandle}
           />
           <input
-            name="postBody"
+            name="name"
             className="hidden"
-          
+
             type="text"
             placeholder="Type message"
             value={formData.name}
@@ -118,13 +107,12 @@ console.log(formData)
       </div>
       </form>
       {/* users chat goes down below  👇🏻 */}
-      <div className = "flex flex-col items-center space-x-4">
-        <span className=" italic font-light bg-orange-400">@FantasyFinancial1997</span>
+      <div className = "flex flex-col items-center space-x-4 overflow-y-scroll max-h-96"> 
         {/* <p>Is Bitcoin the future ?</p> */}
         {posts.map((post, index) => (
         <div key={index} className="flex flex-col items-center space-x-4 m-8 ">
-    {<span className="italic font-light">@ {post.name}</span>}
-          <p>{post.postBody}</p>
+    {<span className="italic font-light">💲{post.name}</span>}
+          <p>-{post.postBody}</p>
           <span className="font-light text-sm text-center">{new Date(post.createdAt).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'numeric', year:'2-digit'})}</span>
         </div>
       ))}

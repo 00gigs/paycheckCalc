@@ -72,7 +72,7 @@ router.push('/Signin')
               type="text"
               name="name"
               placeholder="UserName"
-              className="rounded text-center bg-transparent"
+              className="rounded text-center text-black "
               value={form.name}
             />
             <input
@@ -81,7 +81,7 @@ router.push('/Signin')
               type="email"
               name="email"
               placeholder="Email"
-              className="rounded text-center bg-transparent"
+              className="rounded text-center  text-black"
               value={form.email}
             />
             <input
@@ -90,7 +90,7 @@ router.push('/Signin')
               type="password"
               name="password"
               placeholder="Password"
-              className="rounded text-center  bg-transparent"
+              className="rounded text-center   text-black"
               value={form.password}
             />
             <button type="submit" className="hover:text-green-200">
