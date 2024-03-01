@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CheckCalc = () => {
   const [saveValue, setSaveValue] = useState(20); // Initial value set to the min value of the slider
@@ -11,8 +11,12 @@ const CheckCalc = () => {
   const [data, setData] = useState(null);
   const [amountSaved, setAmountSaved] = useState(0);
   const [amountInvested, setAmountInvested] = useState(0);
-  // Event handler for the 'Save' slider
+  // Event handler for the 'Save' slider'
+
+
+
   const Calculate = async () => {
+    
     const paycheckAmount = parseFloat(checkAmount);
     if (!paycheckAmount) {
       alert("Please enter a valid paycheck amount");
@@ -60,6 +64,44 @@ const CheckCalc = () => {
 
     alert("savings/invesment  information save successful");
     console.log(JSON.stringify(postData)) //replace with toast notifications
+    
+    const fetchLatestData = async () => {
+      const userAccount = localStorage.getItem('user');
+      if (!userAccount) {
+        console.error('User account not found in localStorage');
+        return; // Exit if no user account found
+      }
+    
+      try {
+        // Update the endpoint to match the new structure within the app directory
+        const response = await fetch(`/api/account/latest?finAccount=${encodeURIComponent(userAccount)}`, {
+          method: 'GET', // Ensure method is specified if needed, though 'GET' is default
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // No body is needed for a GET request
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Failed to fetch latest data, status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        setAmountSaved(data.amountSaved);
+        setAmountInvested(data.amountInvested);
+      } catch (error) {
+        console.error('Error fetching latest data:', error);
+        // Optionally, update the UI to inform the user that an error occurred
+      }
+    };
+if(res.ok){
+  fetchLatestData();
+}
+// effect(() => {
+//     // Call the function to fetch latest data on component mount
+//     }, []);
+  
+
   }
     //use  a onSubmission inside of calculate button to be able to store
     // (savingAmount) & (investmentAmount) data in a form to be submitted as POST request in [route.js]file
