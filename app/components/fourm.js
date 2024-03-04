@@ -4,11 +4,11 @@ import React ,{ useState,useEffect }from "react";
 export const Fourm = () => {
 
 
- const  userAccount_post = localStorage.getItem('user')
+  const [userAccountPost, setUserAccountPost] = useState(localStorage.getItem('user'));
 
 const [formData,setFormData] = useState({
   postBody:"",
-  name:userAccount_post,
+  name:userAccountPost,
   formType: "forumPost",
 })
 
@@ -40,6 +40,39 @@ useEffect(() => {
   return () => clearInterval(intervalId); // Cleanup on unmount
 }, []);
 
+useEffect(() => {
+  const handleStorageChange = (e) => {
+
+      setUserAccountPost(localStorage.getItem('user'));
+  
+  };
+
+  // window.addEventListener('storage', handleStorageChange);
+
+  // return () => {
+  //   window.removeEventListener('storage', handleStorageChange);
+  // };
+
+  handleStorageChange();
+
+    // Polling for real-time updates
+    const intervalId = setInterval(handleStorageChange, 1000); // Adjust the interval as needed
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+}, []);
+
+// Update formData when userAccountPost changes
+useEffect(() => {
+  const currentUser = localStorage.getItem('user');
+  setUserAccountPost(currentUser);
+  setFormData(prevState => ({
+    ...prevState,
+    name: userAccountPost,
+  }));
+}, [userAccountPost]);
+
+
 
 const changeHandle = (e) =>{
   const {name,value } = e.target
@@ -60,12 +93,12 @@ e.preventDefault()
       body: JSON.stringify(formData),
     })
 
-    console.log(userAccount_post)
     
-if(!res.ok){
-throw new Error('Failed to create post')
-}else{
-alert('post created sucessfully')
+    if(!res.ok){
+      throw new Error('Failed to create post')
+    }else{
+      // alert('post created sucessfully')
+console.log(userAccountPost)
 console.log(formData)
 
 }
