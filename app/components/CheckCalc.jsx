@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from 'react';
 const CheckCalc = () => {
   const [saveValue, setSaveValue] = useState(20); // Initial value set to the min value of the slider
   const [investValue, setInvestValue] = useState(10);
@@ -14,9 +13,46 @@ const CheckCalc = () => {
   // Event handler for the 'Save' slider'
 
 
+  useEffect(() => {
+    // Function to fetch latest data
+    const fetchLatestData = async () => {
+      const userAccount = localStorage.getItem('user');
+      if (!userAccount) {
+        console.error('User account not found in localStorage');
+        return;
+      }
+
+      try {
+        console.log(`/api/account?type=financialDetails&userId=${userAccount}`)
+        const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent(userAccount)}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch latest data, status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setAmountSaved(data.amountSaved);
+        setAmountInvested(data.amountInvested);
+      } catch (error) {
+        console.error('Error fetching latest data:', error);
+      }
+    };
+
+    fetchLatestData();
+
+    // Polling for real-time updates
+    const intervalId = setInterval(fetchLatestData, 30000); // Adjust the interval as needed
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+  }, []); // Ensure useEffect has no dependencies unless necessary
+
+//----------------------------------------------------------------------------------------------------------------------
 
   const Calculate = async () => {
-    
     const paycheckAmount = parseFloat(checkAmount);
     if (!paycheckAmount) {
       alert("Please enter a valid paycheck amount");
@@ -35,6 +71,7 @@ const CheckCalc = () => {
       Fun: `$ ${funAmount}`,
 
     };
+   
     console.log(JSON.stringify(moneyData, null, 3));
     setData(moneyData);
     setAmountSaved(savingAmount + amountSaved);
@@ -47,7 +84,7 @@ const CheckCalc = () => {
     const userAccount = localStorage.getItem('user')
 
    const postData = {
-    amountSaved:savingAmount + amountSaved,
+    amountSaved: savingAmount +  amountSaved,
     amountInvested:investmentAmount + amountInvested,
     finAccount:userAccount,
        formType:'userMoney',
@@ -59,47 +96,12 @@ const CheckCalc = () => {
       body: JSON.stringify(postData),
     });
     if (!res.ok) {
-      throw new Error("Failed to savings/invesment  information");
+      throw new Error("Failed to save savings/invesment information");
     }
 
     alert("savings/invesment  information save successful");
     console.log(JSON.stringify(postData)) //replace with toast notifications
     
-    const fetchLatestData = async () => {
-      const userAccount = localStorage.getItem('user');
-      if (!userAccount) {
-        console.error('User account not found in localStorage');
-        return; // Exit if no user account found
-      }
-    
-      try {
-        // Update the endpoint to match the new structure within the app directory
-        const response = await fetch(`/api/account/latest?finAccount=${encodeURIComponent(userAccount)}`, {
-          method: 'GET', // Ensure method is specified if needed, though 'GET' is default
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          // No body is needed for a GET request
-        });
-    
-        if (!response.ok) {
-          throw new Error(`Failed to fetch latest data, status: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        setAmountSaved(data.amountSaved);
-        setAmountInvested(data.amountInvested);
-      } catch (error) {
-        console.error('Error fetching latest data:', error);
-        // Optionally, update the UI to inform the user that an error occurred
-      }
-    };
-if(res.ok){
-  fetchLatestData();
-}
-// effect(() => {
-//     // Call the function to fetch latest data on component mount
-//     }, []);
   
 
   }

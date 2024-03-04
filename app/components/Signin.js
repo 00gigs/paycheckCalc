@@ -64,6 +64,7 @@ you can use useState and form as const
           >
             <input
               required
+            
               onChange={handleChange}
               type="email"
               name="email"

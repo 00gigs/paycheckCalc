@@ -38,7 +38,7 @@ const TopNav = () => {
 
 const logoutUser = () => {
   localStorage.removeItem('token'); // Remove the token
-  setUsername(''); // Reset username to update UI
+  setUsername(null); // Reset username to update UI
   // Optionally, redirect the user or perform additional cleanup
 router.push("/Signin")
 };

@@ -21,7 +21,7 @@ const [posts, setPosts] = useState([]); // State to store posts
 
 useEffect(() => {
   const fetchPosts = async () => {
-    const response = await fetch('/api/account',{
+    const response = await fetch('/api/account?type=posts',{
       method:'GET',
       headers:{"Content-Type": "application/json",},
     });
@@ -35,6 +35,9 @@ useEffect(() => {
   };
 
   fetchPosts();
+  const intervalId = setInterval(fetchPosts, 5000);
+
+  return () => clearInterval(intervalId); // Cleanup on unmount
 }, []);
 
 
@@ -64,6 +67,7 @@ throw new Error('Failed to create post')
 }else{
 alert('post created sucessfully')
 console.log(formData)
+
 }
 }
   return (

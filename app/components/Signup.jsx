@@ -68,6 +68,8 @@ router.push('/Signin')
           >
             <input
               required
+              min="5"
+              max="20"
               onChange={handleChange}
               type="text"
               name="name"

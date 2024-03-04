@@ -97,16 +97,54 @@ export async function POST(req) {
     return NextResponse.json({ message: "error", error }, { status: 500 });
   }
 }
-//used _ in front of req to ignore declare error
+
 export async function GET(req) {
-  //edit  find method to return most recent
+  const url = new URL(req.url);
+  // Extract query parameters from the request URL
+  const type = url.searchParams.get('type');
+
   try {
-    const posts = await post.find();
-    console.log(JSON.stringify(posts, null, 2));
-    // Now, each post in the `posts` array should have an `account` object with `name` and `email`
-    // You can directly return the modified posts array with populated account information
-    return NextResponse.json(posts, { status: 200 });
+    switch (type) {
+      case 'posts':
+        // Handling GET requests for posts
+        const posts = await post.find().sort({ createdAt: -1 }); // Assuming there's a createdAt field for sorting
+        console.log(JSON.stringify(posts, null, 2));
+        return NextResponse.json(posts, { status: 200 });
+
+      case 'financialDetails':
+        // Handling GET requests for user financial details
+      //  const userId = url.searchParams.get('userId');
+      //   if (!userId) {
+      //     return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+      //   }
+  
+      // if (!userId) {
+        //   return NextResponse.json({ message: "User ID is required" }, { status: 400 });
+        // }
+
+
+        /*
+        
+        */
+        
+        const userId = req.query;
+        console.log('id',userId)
+        const financialDetails = await moneyinfo.findOne({ userId }).sort({createdAt: -1});
+        if (!financialDetails) {
+          return NextResponse.json({ message: "Financial details not found" }, { status: 404 });
+        }
+        return NextResponse.json(financialDetails, { status: 200 });
+
+      default:
+        return NextResponse.json({ message: "Invalid request type" }, { status: 400 });
+    }
   } catch (error) {
-    return NextResponse.json({ message: "error", error }, { status: 500 });
+    console.error("Error in GET:", error);
+    return NextResponse.json({ message: "error", error: error.message }, { status: 500 });
   }
 }
+
+
+
+
+//make a line of code that queries a delete for when a user clears the amounts in the database.
