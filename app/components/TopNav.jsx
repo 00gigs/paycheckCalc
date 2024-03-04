@@ -16,16 +16,25 @@ const TopNav = () => {
 
   
   useEffect(() => {
-    const token = localStorage.getItem('token'); 
-    if (token) {
-      try {
-        const decoded = jwtDecode(token); 
-        setUsername(decoded.userId_name.name || 'User');
-        localStorage.setItem('user', decoded.userId_name.name) //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
-      } catch (error) {
-        console.error('Error decoding token:', error);
-      }
-    }
+
+   function retrieval(){
+     
+     const token = localStorage.getItem('token'); 
+     if (token) {
+       try {
+         const decoded = jwtDecode(token); 
+         setUsername(decoded.userId_name.name || 'User');
+         localStorage.setItem('user', decoded.userId_name.name) //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
+       } catch (error) {
+         console.error('Error decoding token:', error);
+       }
+     }
+ 
+   }
+    const intervalId = setInterval(retrieval, 300); // Adjust the interval as needed
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 /**👆👆
    * get token
@@ -37,7 +46,7 @@ const TopNav = () => {
 
 
 const logoutUser = () => {
-  localStorage.removeItem('token'); // Remove the token
+  localStorage.clear(); // Remove the token
   setUsername(null); // Reset username to update UI
   // Optionally, redirect the user or perform additional cleanup
 router.push("/Signin")

@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import moneyinfo from "@/app/(models)/money";
+import { json } from "express/lib/response";
+import { query } from "express";
 
 // export async function account(req){
 //     // console.log('POST RAN')
@@ -66,7 +68,8 @@ export async function POST(req) {
           if (!user) {
             return NextResponse.json(
               { message: "User not found" },
-              { status: 404 }
+              { status: 404 },
+              alert('wrong creditials please try again or sign up')
             );
           }
           const match = await bcryptjs.compare(body.password, user.password);
@@ -103,6 +106,8 @@ export async function GET(req) {
   // Extract query parameters from the request URL
   const type = url.searchParams.get('type');
 
+
+
   try {
     switch (type) {
       case 'posts':
@@ -126,10 +131,12 @@ export async function GET(req) {
         /*
         
         */
-        
-        const userId = req.query;
-        console.log('id',userId)
-        const financialDetails = await moneyinfo.findOne({ userId }).sort({createdAt: -1});
+
+        const userId = req.query; // Assuming your query parameter is named finAccount
+console.log('userId', userId);
+       
+const financialDetails = await moneyinfo.findOne(  userId ).sort({ createdAt: -1 });
+   
         if (!financialDetails) {
           return NextResponse.json({ message: "Financial details not found" }, { status: 404 });
         }

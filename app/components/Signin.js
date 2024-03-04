@@ -3,11 +3,13 @@ import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ModalComponent from "./myModal";
 const Signin = () => {
 const router = useRouter()
 
 
-
+const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const [form, setForm] = useState({
     //make sure form input states are uniform across app
@@ -24,6 +26,9 @@ const router = useRouter()
     }));
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   /*use handleSubmit in checkCalc to send a post req with body containing amount saved and amount invested along with the current user.
 you can use useState and form as const
   */
@@ -38,22 +43,34 @@ you can use useState and form as const
       // payload structure  👇🏻
       body: JSON.stringify(form),
     });
+
+    if (res.status === 401) {
+      setModalMessage("Make sure user credentials are correct. Please try again.");
+      setShowModal(true);
+      return; // Exit the function early
+    }
+    if (res.status === 500) {
+      setModalMessage("please Sign up, if you do not have an account");
+      setShowModal(true);
+      return; // Exit the function early
+    }
+
     if (!res.ok) {
       throw new Error("Failed to Signin user");
     }
 
+
     const data = await res.json();
 
-    localStorage.setItem('token', data.token);
-    window.dispatchEvent(new Event('tokenChanged'));
-
-    alert("SignIn successful"); //replace with toast notifications
     router.refresh();
     router.push("/");
+    localStorage.setItem('token', data.token);
+    window.dispatchEvent(new Event('tokenChanged'));
   };
 
   return (
     <div>
+       {showModal && <ModalComponent message={modalMessage} onClose={handleCloseModal} />}
       <div className="flex justify-center h-screen items-center ">
         <div className="border-spacing-2 m-3 border-4 p-4 border-orange-300 md:h-80 md:w-full">
           <form

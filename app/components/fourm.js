@@ -4,7 +4,7 @@ import React ,{ useState,useEffect }from "react";
 export const Fourm = () => {
 
 
-const userAccount_post = localStorage.getItem('user')
+ const  userAccount_post = localStorage.getItem('user')
 
 const [formData,setFormData] = useState({
   postBody:"",
@@ -35,7 +35,7 @@ useEffect(() => {
   };
 
   fetchPosts();
-  const intervalId = setInterval(fetchPosts, 5000);
+  const intervalId = setInterval(fetchPosts, 1000);
 
   return () => clearInterval(intervalId); // Cleanup on unmount
 }, []);

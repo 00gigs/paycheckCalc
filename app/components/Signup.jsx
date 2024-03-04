@@ -68,8 +68,8 @@ router.push('/Signin')
           >
             <input
               required
-              min="5"
-              max="20"
+              minlength="5"
+              maxlength="20"
               onChange={handleChange}
               type="text"
               name="name"
@@ -89,6 +89,8 @@ router.push('/Signin')
             <input
               required
               onChange={handleChange}
+              minlength="5"
+              maxlength="20"
               type="password"
               name="password"
               placeholder="Password"

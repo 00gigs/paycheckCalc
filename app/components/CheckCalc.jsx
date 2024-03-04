@@ -44,7 +44,7 @@ const CheckCalc = () => {
     fetchLatestData();
 
     // Polling for real-time updates
-    const intervalId = setInterval(fetchLatestData, 30000); // Adjust the interval as needed
+    const intervalId = setInterval(fetchLatestData, 3000); // Adjust the interval as needed
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);
