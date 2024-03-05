@@ -10,21 +10,21 @@ const CheckCalc = () => {
   const [data, setData] = useState(null);
   const [amountSaved, setAmountSaved] = useState(0);
   const [amountInvested, setAmountInvested] = useState(0);
+  const [userAccount, setUserAccount] = useState(localStorage.getItem('user'));
   // Event handler for the 'Save' slider'
 
 
   useEffect(() => {
     // Function to fetch latest data
     const fetchLatestData = async () => {
-      const userAccount = localStorage.getItem('user');
+      const currentUser = localStorage.getItem('user');
       if (!userAccount) {
         console.error('User account not found in localStorage');
         return;
       }
-
+      // setUserAccount(currentUser)
       try {
-        console.log(`/api/account?type=financialDetails&userId=${userAccount}`)
-        const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent(userAccount)}`, {
+        const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent({finAccount:userAccount})}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -34,6 +34,8 @@ const CheckCalc = () => {
         }
 
         const data = await response.json();
+        console.log(data)
+        console.log(data.finAccount)
         setAmountSaved(data.amountSaved);
         setAmountInvested(data.amountInvested);
       } catch (error) {
@@ -44,15 +46,39 @@ const CheckCalc = () => {
     fetchLatestData();
 
     // Polling for real-time updates
-    const intervalId = setInterval(fetchLatestData, 3000); // Adjust the interval as needed
+    const intervalId = setInterval(fetchLatestData, 300); // Adjust the interval as needed
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);
   }, []); // Ensure useEffect has no dependencies unless necessary
 
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+  
+      setUserAccount(localStorage.getItem('user'));
+    
+    };
+  
+    // window.addEventListener('storage', handleStorageChange);
+  
+    // return () => {
+    //   window.removeEventListener('storage', handleStorageChange);
+    // };
+  
+    handleStorageChange();
+  
+      // Polling for real-time updates
+      const intervalId = setInterval(handleStorageChange, 1000); // Adjust the interval as needed
+  
+      // Cleanup on unmount
+      return () => clearInterval(intervalId);
+  }, []);
+
+
 //----------------------------------------------------------------------------------------------------------------------
 
   const Calculate = async () => {
+    
     const paycheckAmount = parseFloat(checkAmount);
     if (!paycheckAmount) {
       alert("Please enter a valid paycheck amount");
@@ -81,7 +107,7 @@ const CheckCalc = () => {
     setlivingValue(30);
     setFunValue(5);
 
-    const userAccount = localStorage.getItem('user')
+    
 
    const postData = {
     amountSaved: savingAmount +  amountSaved,
@@ -89,6 +115,8 @@ const CheckCalc = () => {
     finAccount:userAccount,
        formType:'userMoney',
    }
+
+   
 
     const res = await fetch("/api/account", {
       method: "POST",

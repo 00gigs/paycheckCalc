@@ -74,6 +74,7 @@ useEffect(() => {
 
 
 
+
 const changeHandle = (e) =>{
   const {name,value } = e.target
   setFormData((prevState)=>({
@@ -84,6 +85,10 @@ const changeHandle = (e) =>{
 
 const formSub = async (e) =>{
 e.preventDefault()
+if (!userAccountPost) {
+  alert('You must be logged in to post.');
+  return; // Prevent the form from being submitted
+}
  const res = await fetch("/api/account",{
       method:"POST",
       headers:{"Content-Type": "application/json",},
@@ -105,7 +110,7 @@ console.log(formData)
 }
   return (
     <div className="space-y-4 mt-2 mb-3">
-      <form 
+      {userAccountPost ? (  <form 
       className="flex flex-col items-center w-full"
       name="form"
       onSubmit={formSub}
@@ -142,7 +147,10 @@ console.log(formData)
           />
         </div>
       </div>
-      </form>
+      </form> ) : (
+        <p className="bg-orange-500 flex justify-center">Please <a className="ml-1 mr-1 text-white hover:text-green-600 " href="/Signin"> log in </a> to post in the forum.</p>
+      )}
+        
       {/* users chat goes down below  👇🏻 */}
       <div className = "flex flex-col items-center space-x-4 overflow-y-scroll max-h-96"> 
         {/* <p>Is Bitcoin the future ?</p> */}
