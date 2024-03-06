@@ -10,7 +10,7 @@ const Advice = () => {
 
     const handleSubmit = async () => {
         const openai = new OpenAI({
-            // apiKey: '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',
+            // apiKey: '',
             dangerouslyAllowBrowser: true,
         });
 
