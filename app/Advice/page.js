@@ -1,69 +1,50 @@
 'use client'
-import React, {useState} from "react";
+import React, { useState } from "react";
 import OpenAI from "openai";
 
-
-//OPEN AI CHARGES WATCH API USAGE❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️
-
-
-
 const Advice = () => {
+    // User input data as a simple string for ease of handling
+    const [gptData, setGptData] = useState("");
+    // GPT response to the user
+    const [gpt, setGpt] = useState("");
 
-    
-  
+    const handleSubmit = async () => {
+        const openai = new OpenAI({
+            // apiKey: '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',
+            dangerouslyAllowBrowser: true,
+        });
 
-    const [gpt,setGpt] = useState()
-    
-//     const openai = new OpenAI({apiKey:'',
-//     dangerouslyAllowBrowser: true,
-// });
-    
-    async function main() {
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: "user", content: "how to turn 400 dollars into 600." }],
-        model: "gpt-3.5-turbo",
-      });
-    const result =  completion.choices[0].message.content
-      console.log(completion.choices[0].message.content);
-      setGpt(result)
-    }
-    
-    // main();
+        try {
+            const completion = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: gptData }],
+            });
+            const result = completion.choices[0].message.content;
+            setGpt(result);
+            setGptData("");
+        } catch (error) {
+            console.error("Error fetching GPT-3 completion:", error);
+        }
+    };
 
-
-   
-const fetchData = () => {
-
-}  
-
-
-const onsubmit = () => {
-
-} 
-
-
-  return (
-    //flex col flex = vertical stack
-
-    <div className="flex flex-col items-center justify-center align-middle p-7 text-center">
-      <h1 className="mb-5 text-lg font-bold">
-        Meet Fin, the Ai financial friend 👋
-      </h1>
-
-      {/**result display /AI text */}
-      <div className=" text-wrap  flex  w-3/4 border-4 border-orange-300 m-3 p-4 bg-slate-400 bg-opacity-25 rounded-md text-slate-200 max-h-80 overflow-y-auto tracking-widest">
-        {gpt}
-      </div>
-
-      {/**submit button   */}
-
-      <div className="flex items-center">
-        <button className="flex mr-4 bg-orange-400 rounded-xl w-fit  p-1">+</button>
-        {/**inpunt   */}
-        <input className=" form-input mt-1 block w-fit p-2 rounded-md bg-inherit border-b-2"/>
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex flex-col items-center justify-center p-4 text-center">
+            <div className="text-wrap flex w-full border-4 border-orange-300 m-3 p-4 bg-slate-400 bg-opacity-25 rounded-md text-slate-200 max-h-80 overflow-y-auto mx-3 my-3 ">
+                
+                {gpt}
+            </div>
+            <div className="flex items-center">
+                <button onClick={handleSubmit} className="mr-4 bg-orange-400 rounded-xl p-1">+</button>
+                <input
+                    className="form-input mt-1 block w-full p-2 rounded-md bg-inherit border-b-2 "
+                    value={gptData} // This binds the input value to the component's state
+                    onChange={(e) => setGptData(e.target.value)} // This updates the state on input change
+                    type="text"
+                    placeholder="Enter your prompt"
+                />
+            </div>
+        </div>
+    );
 };
 
 export default Advice;
