@@ -3,9 +3,9 @@ import React from 'react';
 
 const ModalComponent = ({ message, onClose }) => {
   return (
-    <div className="flex justify-center bg-red-950 ">
-      <p>{message}</p>
-      <button className="bg-red-400 rounded-md text-white" onClick={onClose}>X</button>
+    <div className="flex justify-center bg-slate-200 h-12">
+      <p className="p-3 text-red-500 font-extrabold">{message}</p>
+      <button className="m-3 bg-red-400 rounded-xl h-7 w-5 text-black" onClick={onClose}>X</button>
     </div>
   );
 };

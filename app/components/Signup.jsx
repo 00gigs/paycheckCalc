@@ -11,8 +11,6 @@ import { useRouter } from "next/navigation";
 const Signup =  () => {
   const router = useRouter()
   
- 
-
   //empty form data
   const [form, setForm] = useState({
     //make sure form input states are uniform across app
@@ -21,10 +19,6 @@ const Signup =  () => {
     password: "", 
     formType: "user",
   });
-
-  
-
- 
 
   const handleChange = (e)=>{
     const { name, value } = e.target;

@@ -17,7 +17,7 @@ const CheckCalc = () => {
   useEffect(() => {
     // Function to fetch latest data
     const fetchLatestData = async () => {
-      const currentUser = localStorage.getItem('user');
+      const userAccount = localStorage.getItem('user');
       if (!userAccount) {
         console.error('User account not found in localStorage');
         return;
@@ -46,7 +46,7 @@ const CheckCalc = () => {
     fetchLatestData();
 
     // Polling for real-time updates
-    const intervalId = setInterval(fetchLatestData, 300); // Adjust the interval as needed
+    const intervalId = setInterval(fetchLatestData, 5000); // Adjust the interval as needed
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);
@@ -68,7 +68,7 @@ const CheckCalc = () => {
     handleStorageChange();
   
       // Polling for real-time updates
-      const intervalId = setInterval(handleStorageChange, 1000); // Adjust the interval as needed
+      const intervalId = setInterval(handleStorageChange, 3000); // Adjust the interval as needed
   
       // Cleanup on unmount
       return () => clearInterval(intervalId);

@@ -9,10 +9,10 @@ const ChartDisplay = () => {
   const tic = "IBM";
 
   const getTics = async () => {
-    const res = await fetch(
-      `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=demo`
-      //API rate LIMIT is 25 requests per day
-    );
+    // const res = await fetch(
+    //   `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=demo`
+    //   //API rate LIMIT is 25 requests per day❗️❗️❗️❗️❗️❗️❗️❗️ wait a couple days 3/05
+    // );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }

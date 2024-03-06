@@ -1,6 +1,6 @@
 'use client'
 import React ,{ useState,useEffect }from "react";
-
+import DOMPurify from 'dompurify'; // Import DOMPurify for sanitizing HTML
 export const Fourm = () => {
 
 
@@ -39,6 +39,15 @@ useEffect(() => {
 
   return () => clearInterval(intervalId); // Cleanup on unmount
 }, []);
+
+
+//use regex (regular expression) to  and return the text with the link(text) as the href of the link element 
+const makeLinksClickable = (text) => {
+  const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig;
+  return text.replace(urlRegex, (url) => `<a " href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+};
+
+
 
 useEffect(() => {
   const handleStorageChange = (e) => {
@@ -148,7 +157,7 @@ console.log(formData)
         </div>
       </div>
       </form> ) : (
-        <p className="bg-orange-500 flex justify-center">Please <a className="ml-1 mr-1 text-white hover:text-green-600 " href="/Signin"> log in </a> to post in the forum.</p>
+        <p className="flex justify-center">Please <a className=" ml-1 mr-1 text-green-500 hover:text-green-100 font-bold  duration-300 " href="/Signin"> log in </a> to post in the forum.</p>
       )}
         
       {/* users chat goes down below  👇🏻 */}
@@ -157,7 +166,9 @@ console.log(formData)
         {posts.map((post, index) => (
         <div key={index} className="flex flex-col items-center space-x-4 m-8 ">
     {<span className="italic font-light">💲{post.name}</span>}
-          <p>-{post.postBody}</p>
+    <p dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(makeLinksClickable(post.postBody))
+            }}></p>
           <span className="font-light text-sm text-center">{new Date(post.createdAt).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit', day:'2-digit', month:'numeric', year:'2-digit'})}</span>
         </div>
       ))}

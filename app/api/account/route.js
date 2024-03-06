@@ -135,7 +135,7 @@ export async function GET(req) {
         const userId = req.query; // Assuming your query parameter is named finAccount
         // const user = JSON.stringify(userId,null,3)
         // console.log(user)   
-console.log(userId)
+// console.log(userId)
        
 const financialDetails = await moneyinfo.findOne(  userId ).sort({ createdAt: -1 });
    
