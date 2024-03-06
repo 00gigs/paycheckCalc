@@ -1,6 +1,47 @@
-import React from "react";
+'use client'
+import React, {useState} from "react";
+import OpenAI from "openai";
+
+
+//OPEN AI CHARGES WATCH API USAGE❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️❗️
+
+
 
 const Advice = () => {
+
+    
+  
+
+    const [gpt,setGpt] = useState()
+    
+//     const openai = new OpenAI({apiKey:'',
+//     dangerouslyAllowBrowser: true,
+// });
+    
+    async function main() {
+      const completion = await openai.chat.completions.create({
+        messages: [{ role: "user", content: "how to turn 400 dollars into 600." }],
+        model: "gpt-3.5-turbo",
+      });
+    const result =  completion.choices[0].message.content
+      console.log(completion.choices[0].message.content);
+      setGpt(result)
+    }
+    
+    // main();
+
+
+   
+const fetchData = () => {
+
+}  
+
+
+const onsubmit = () => {
+
+} 
+
+
   return (
     //flex col flex = vertical stack
 
@@ -11,28 +52,7 @@ const Advice = () => {
 
       {/**result display /AI text */}
       <div className=" text-wrap  flex  w-3/4 border-4 border-orange-300 m-3 p-4 bg-slate-400 bg-opacity-25 rounded-md text-slate-200 max-h-80 overflow-y-auto tracking-widest">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut porttitor leo a
-        diam sollicitudin tempor. Facilisis magna etiam tempor orci eu lobortis.
-        Mattis enim ut tellus elementum sagittis vitae et leo. Arcu odio ut sem
-        nulla. Gravida dictum fusce ut placerat orci nulla. At consectetur lorem
-        donec massa sapien. Eu mi bibendum neque egestas. Massa enim nec dui
-        nunc. Ac orci phasellus egestas tellus rutrum tellus. Proin sed libero
-        enim sed faucibus turpis in eu. Ipsum consequat nisl vel pretium lectus
-        quam. Bibendum arcu vitae elementum curabitur vitae. Arcu non odio
-        euismod lacinia at quis risus sed vulputate. Vel eros donec ac odio
-        tempor. Nibh praesent tristique magna sit amet purus gravida. Laoreet
-        sit amet cursus sit amet dictum. Dolor sit amet consectetur adipiscing.
-        Cursus vitae congue mauris rhoncus aenean vel. Sit amet nisl suscipit
-        adipiscing bibendum est. Nullam eget felis eget nunc lobortis mattis.
-        Integer quis auctor elit sed vulputate. Ligula ullamcorper malesuada
-        proin libero nunc consequat. Habitasse platea dictumst vestibulum
-        rhoncus est pellentesque elit ullamcorper dignissim. Lobortis
-        scelerisque fermentum dui faucibus in ornare quam viverra. Ante in nibh
-        mauris cursus mattis molestie a. Ultricies integer quis auctor elit sed
-        vulputate. Augue mauris augue neque gravida. Velit laoreet id donec
-        ultrices tincidunt arcu. Nulla at volutpat diam ut venenatis tellus in
-        metus.
+        {gpt}
       </div>
 
       {/**submit button   */}
