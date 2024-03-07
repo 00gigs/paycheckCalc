@@ -2,7 +2,7 @@
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from 'react';
 const CheckCalc = () => {
-  const [saveValue, setSaveValue] = useState(20); // Initial value set to the min value of the slider
+  const [saveValue, setSaveValue] = useState(20); 
   const [investValue, setInvestValue] = useState(10);
   const [livingValue, setlivingValue] = useState(30);
   const [funValue, setFunValue] = useState(5);
@@ -10,18 +10,21 @@ const CheckCalc = () => {
   const [data, setData] = useState(null);
   const [amountSaved, setAmountSaved] = useState(0);
   const [amountInvested, setAmountInvested] = useState(0);
-
+  const [username, setUsername] = useState('');
 
 
   useEffect(() => {   
       // Function to fetch latest data
       const fetchLatestData = async () => {
+        //GETS CURRENT USER FROM TOKEN STORAGE
         const Token = localStorage.getItem('token'); 
           if (Token) {
             try {
               const decoded = jwtDecode(Token); 
+              //DECODE TOKEN AND FETCH USER  THROUGH GET FUNCTION IN BACKEND WITH url.searchParams.get('userId') TO GET userID
               const username = decoded.userId_name.name
               console.log(username)
+              setUsername(username)
               const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent(username)}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -43,7 +46,7 @@ const CheckCalc = () => {
     fetchLatestData();
 
     // Polling for real-time updates
-    const intervalId = setInterval(fetchLatestData, 5000); // Adjust the interval as needed
+    const intervalId = setInterval(fetchLatestData, 50000); // REFRESH EVERY interval
     // Cleanup on unmount
     return () => clearInterval(intervalId);
 }, []); // Ensure useEffect has no dependencies unless necessary
@@ -51,13 +54,51 @@ const CheckCalc = () => {
 
 
 
-  
+
 
 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-  const Calculate = async () => {
+
+useEffect(() => {
+  // Define an async function inside the useEffect
+  const sendPostData = async () => {
+    if (amountSaved > 0 && amountInvested > 0 && username !== '') {
+      const postData = {
+        amountSaved: amountSaved,
+        amountInvested: amountInvested,
+        finAccount: username, // Use username from state
+        formType: 'userMoney',
+      };
+
+      try {
+        const res = await fetch("/api/account", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to save savings/investment information");
+        }
+
+        // Success handling here
+        alert("Savings/investment information save successful");
+        console.log(JSON.stringify(postData)); // Log or handle data
+      } catch (error) {
+        console.error(error);
+        // Error handling here
+      }
+    }
+  };
+
+  // Immediately invoke the async function
+  sendPostData();
+}, [amountSaved, amountInvested, username]); 
+
+
+
+const Calculate = async () => {
     
     const paycheckAmount = parseFloat(checkAmount);
     if (!paycheckAmount) {
@@ -71,7 +112,7 @@ const CheckCalc = () => {
     );
     const funAmount = Math.round((funValue / 100) * paycheckAmount);
     const moneyData = {
-      Savings: `$ ${savingAmount}`,
+      Savings: `$ ${savingAmount }`,
       Investments: `$ ${investmentAmount}`,
      ' Living Expenses': `$ ${livingExpensesAmount}`,
       Fun: `$ ${funAmount}`,
@@ -80,36 +121,30 @@ const CheckCalc = () => {
    
     console.log(JSON.stringify(moneyData, null, 3));
     setData(moneyData);
-    setAmountSaved(savingAmount + amountSaved);
-    setAmountInvested(investmentAmount + amountInvested);
+    setAmountSaved(prevAmount => prevAmount + savingAmount);
+    setAmountInvested(prevAmount => prevAmount + investmentAmount);
     setSaveValue(20);
     setInvestValue(10);
     setlivingValue(30);
     setFunValue(5);
 
+
+
+    const Token2 = localStorage.getItem('token'); 
+    if (Token2) {
+      try {
+        const decoded = jwtDecode(Token2); 
+        //DECODE TOKEN AND FETCH USER  THROUGH GET FUNCTION IN BACKEND WITH url.searchParams.get('userId') TO GET userID
+        const username = decoded.userId_name.name
+        console.log(username)
+        setUsername(username)
+      }catch(error){
+        throw new Error('failed to get user',error)
+      }
+    }
     
-
-   const postData = {
-    amountSaved:  amountSaved,
-    amountInvested: amountInvested,
-    finAccount:userAccount,
-       formType:'userMoney',
-   }
-
    
 
-    const res = await fetch("/api/account", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(postData),
-    });
-    if (!res.ok) {
-      throw new Error("Failed to save savings/invesment information");
-    }
-
-    alert("savings/invesment  information save successful");
-    console.log(JSON.stringify(postData)) //replace with toast notifications
-    
   
 
   }

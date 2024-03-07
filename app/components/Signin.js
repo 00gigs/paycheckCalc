@@ -10,7 +10,7 @@ const router = useRouter()
 
 const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-const [userToken, setUserToken] = useState(null)
+
   const [form, setForm] = useState({
     //make sure form input states are uniform across app
     email: "",

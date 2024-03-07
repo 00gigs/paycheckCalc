@@ -1,4 +1,5 @@
 'use client'
+import { jwtDecode } from "jwt-decode";
 import React ,{ useState,useEffect }from "react";
 import DOMPurify from 'dompurify'; // Import DOMPurify for sanitizing HTML
 export const Fourm = () => {
@@ -51,9 +52,10 @@ const makeLinksClickable = (text) => {
 
 useEffect(() => {
   const handleStorageChange = (e) => {
-
-      setUserAccountPost(localStorage.getItem('user'));
-  
+    const Token = localStorage.getItem('token'); 
+      const decoded = jwtDecode(Token); 
+      const username = decoded.userId_name.name
+      setUserAccountPost(username)
   };
 
   // window.addEventListener('storage', handleStorageChange);
@@ -74,7 +76,7 @@ useEffect(() => {
 // Update formData when userAccountPost changes
 useEffect(() => {
   const currentUser = localStorage.getItem('user');
-  setUserAccountPost(currentUser);
+  // setUserAccountPost(currentUser);
   setFormData(prevState => ({
     ...prevState,
     name: userAccountPost,

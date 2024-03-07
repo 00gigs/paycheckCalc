@@ -117,24 +117,7 @@ export async function GET(req) {
         return NextResponse.json(posts, { status: 200 });
 
       case 'financialDetails':
-        // Handling GET requests for user financial details
-      //  const userId = url.searchParams.get('userId');
-      //   if (!userId) {
-      //     return NextResponse.json({ message: "User ID is required" }, { status: 400 });
-      //   }
-  
-      // if (!userId) {
-        //   return NextResponse.json({ message: "User ID is required" }, { status: 400 });
-        // }
-
-
-        /*
-        
-        */
-
-// Assuming your query parameter is named finAccount
-        // const user = JSON.stringify(userId,null,3)
-      
+      //👇🏻GETS CURRENT USER 
      const user =   url.searchParams.get('userId')
        
 const financialDetails = await moneyinfo.findOne({finAccount:user}).sort({createdAt: -1});
