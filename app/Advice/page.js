@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import React, { useState,useEffect } from "react";
 import OpenAI from "openai";
 
 const Advice = () => {
@@ -8,7 +9,41 @@ const Advice = () => {
     // GPT response to the user
     const [gpt, setGpt] = useState("");
 
+    const [username, setUsername] = useState('');
+
+useEffect(() => {
+    const users = () =>{
+        try {
+            const Token3 = localStorage.getItem('token'); 
+            if (Token3) {
+             
+                const decoded = jwtDecode(Token3); 
+                //DECODE TOKEN AND FETCH USER  THROUGH GET FUNCTION IN BACKEND WITH url.searchParams.get('userId') TO GET userID
+                const username = decoded.userId_name.name
+                console.log(username)
+                setUsername(username)
+            } else {
+                console.log('failed to get user',error)
+            
+        }
+              }catch(error){
+                console.log('Error decoding token || no Signed in user');
+              }
+    }
+
+    users()
+
+    const intervalId = setInterval(users, 5000); // REFRESH EVERY interval
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+}, [])
+
+
+
+    
+
     const handleSubmit = async () => {
+
         const openai = new OpenAI({
             // apiKey: '',
             dangerouslyAllowBrowser: true,
@@ -33,7 +68,8 @@ const Advice = () => {
                 
                 {gpt}
             </div>
-            <div className="flex items-center">
+
+{username ? <div className="flex items-center">
                 {/* <button onClick={handleSubmit} className="mr-4 bg-orange-400 rounded-xl p-1">+</button> */}
                 <input
                     className="form-input mt-1 block w-full p-2 rounded-md bg-inherit border-b-2 "
@@ -42,7 +78,13 @@ const Advice = () => {
                     type="text"
                     placeholder="Enter your prompt"
                 />
-            </div>
+            </div>:
+            <div className="flex items-center">
+            {/* <button onClick={handleSubmit} className="mr-4 bg-orange-400 rounded-xl p-1">+</button> */}
+            <p className="flex justify-center">Please <a className=" ml-1 mr-1 text-green-500 hover:text-green-100 font-bold  duration-300 " href="/Signin"> log in </a> to use Fin the Financial AI.</p>
+        </div>}
+
+            
         </div>
     );
 };
