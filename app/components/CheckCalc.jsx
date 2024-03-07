@@ -137,7 +137,7 @@ const Calculate = async () => {
         //DECODE TOKEN AND FETCH USER  THROUGH GET FUNCTION IN BACKEND WITH url.searchParams.get('userId') TO GET userID
         const username = decoded.userId_name.name
         console.log(username)
-        console.log('remove late')
+      
         setUsername(username)
       }catch(error){
         throw new Error('failed to get user',error)
