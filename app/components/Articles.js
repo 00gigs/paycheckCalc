@@ -36,9 +36,14 @@ useEffect(() => {
               {news.headline}
                 </div>
               <hr></hr>
-              <div className="flex justify-center  py-4">
+              {news.image ? <div className="flex justify-center  py-4">
              <img className="md:w-72 border-2 rounded-r py-2" src={news.image}/>
               </div>
+              :
+              <div className="flex justify-center  py-4">
+                  <img className="md:w-72 border-2 rounded-r py-2" src='https://cdn.mos.cms.futurecdn.net/apZwQKgs2BYj8ebCV2NRqe.jpg'/>
+              </div>
+              }
               {news.source}
               </a>
             </div>

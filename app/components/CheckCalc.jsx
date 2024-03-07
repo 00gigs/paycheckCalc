@@ -83,7 +83,7 @@ useEffect(() => {
         }
 
         // Success handling here
-        alert("Savings/investment information save successful");
+        console.log("Savings/investment information save successful");
         console.log(JSON.stringify(postData)); // Log or handle data
       } catch (error) {
         console.error(error);

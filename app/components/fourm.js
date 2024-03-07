@@ -52,18 +52,20 @@ const makeLinksClickable = (text) => {
 
 useEffect(() => {
   const handleStorageChange = (e) => {
-    const Token = localStorage.getItem('token'); 
-      const decoded = jwtDecode(Token); 
-      const username = decoded.userId_name.name
-      setUserAccountPost(username)
+
+    try {
+      const Token = localStorage.getItem('token');
+      if (Token) { // Check if Token exists
+        const decoded = jwtDecode(Token); // Attempt to decode
+        const username = decoded.userId_name.name;
+        setUserAccountPost(username);
+      } else {
+        console.log('No token found in localStorage.');
+      }
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
   };
-
-  // window.addEventListener('storage', handleStorageChange);
-
-  // return () => {
-  //   window.removeEventListener('storage', handleStorageChange);
-  // };
-
   handleStorageChange();
 
     // Polling for real-time updates
@@ -75,7 +77,7 @@ useEffect(() => {
 
 // Update formData when userAccountPost changes
 useEffect(() => {
-  const currentUser = localStorage.getItem('user');
+  // const currentUser = localStorage.getItem('user');
   // setUserAccountPost(currentUser);
   setFormData(prevState => ({
     ...prevState,
