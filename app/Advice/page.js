@@ -34,7 +34,7 @@ const Advice = () => {
                 {gpt}
             </div>
             <div className="flex items-center">
-                <button onClick={handleSubmit} className="mr-4 bg-orange-400 rounded-xl p-1">+</button>
+                {/* <button onClick={handleSubmit} className="mr-4 bg-orange-400 rounded-xl p-1">+</button> */}
                 <input
                     className="form-input mt-1 block w-full p-2 rounded-md bg-inherit border-b-2 "
                     value={gptData} // This binds the input value to the component's state

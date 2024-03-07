@@ -13,17 +13,17 @@ const ChartDisplay = () => {
     //   `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${tic}&apikey=demo`
     //   //API rate LIMIT is 25 requests per day❗️❗️❗️❗️❗️❗️❗️❗️ wait a couple days 3/05
     // );
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    const tics = await res.json();
+    // if (!res.ok) {
+    //   throw new Error(`HTTP error! Status: ${res.status}`);
+    // }
+    // const tics = await res.json();
     const seriesData = tics["Time Series (Daily)"];
-    if (!seriesData) {
-      console.error(
-        "Data not found or the response structure is different than expected."
-      );
-      return []; // Return an empty array or handle this case as appropriate
-    }
+    // if (!seriesData) {
+    //   console.error(
+    //     "Data not found or the response structure is different than expected."
+    //   );
+    //   return []; // Return an empty array or handle this case as appropriate
+    // }
     const convertedData = Object.entries(seriesData).map(([date, values]) => ({
       time: date,
       value: parseFloat(values["4. close"]), // Convert string to float for numerical operations

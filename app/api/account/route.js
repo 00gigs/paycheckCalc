@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import moneyinfo from "@/app/(models)/money";
-import { json } from "express/lib/response";
-import { query } from "express";
+
 
 // export async function account(req){
 //     // console.log('POST RAN')
@@ -102,6 +101,7 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+  
   const url = new URL(req.url);
   // Extract query parameters from the request URL
   const type = url.searchParams.get('type');
@@ -112,7 +112,7 @@ export async function GET(req) {
     switch (type) {
       case 'posts':
         // Handling GET requests for posts
-        const posts = await post.find().sort({ createdAt: -1 }); // Assuming there's a createdAt field for sorting
+        const posts = await post.find().sort({createdAt: -1}); // Assuming there's a createdAt field for sorting
         console.log(JSON.stringify(posts, null, 2));
         return NextResponse.json(posts, { status: 200 });
 
@@ -132,12 +132,12 @@ export async function GET(req) {
         
         */
 
-        const userId = req.query; // Assuming your query parameter is named finAccount
+// Assuming your query parameter is named finAccount
         // const user = JSON.stringify(userId,null,3)
-        // console.log(user)   
-// console.log(userId)
+      
+     const user =   url.searchParams.get('userId')
        
-const financialDetails = await moneyinfo.findOne(  userId ).sort({ createdAt: -1 });
+const financialDetails = await moneyinfo.findOne({finAccount:user}).sort({createdAt: -1});
    
         if (!financialDetails) {
           return NextResponse.json({ message: "Financial details not found" }, { status: 404 });

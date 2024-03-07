@@ -10,7 +10,7 @@ const router = useRouter()
 
 const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-
+const [userToken, setUserToken] = useState(null)
   const [form, setForm] = useState({
     //make sure form input states are uniform across app
     email: "",
@@ -65,6 +65,7 @@ you can use useState and form as const
     router.refresh();
     router.push("/");
     localStorage.setItem('token', data.token);
+    console.log(localStorage.getItem('token'))
     window.dispatchEvent(new Event('tokenChanged'));
   };
 

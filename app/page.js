@@ -14,7 +14,7 @@ export default function Home() {
       <Articles />
       <div className="h-1 bg-slate-800 w-full"></div>
       {/* <Stock /> */}
-      <MultiChartDisplay/>
+      {/* <MultiChartDisplay/> */}
       <div className="h-1 bg-slate-800 w-full"></div>
       <Fourm/>
       <div className="h-1 bg-slate-800 w-full"></div>

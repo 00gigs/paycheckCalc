@@ -24,7 +24,7 @@ const TopNav = () => {
        try {
          const decoded = jwtDecode(token); 
          setUsername(decoded.userId_name.name || 'User');
-         localStorage.setItem('user', decoded.userId_name.name) //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
+        //  localStorage.setItem('user', decoded.userId_name.name) //use decoded.userId_name.name . decoded.userId_name would render the whole userId_name object instead of individual which would throw an error 
        } catch (error) {
          console.error('Error decoding token:', error);
        }
@@ -92,7 +92,7 @@ router.push("/Signin")
       </div>
       {/* Mobile MENU */}
       {openMobileMenu && (
-        <mobile className="md:hidden">
+        <div className="md:hidden">
           <div className="absolute right-2 w-min bg-gray-700 top-10 shadow-md rounded-md p-4 text-white text-center z-[99999]">
             {navLinks.map((link) => (
               <Link href={link.route}>
@@ -110,7 +110,7 @@ router.push("/Signin")
           </Link>
         )}
           </div>
-        </mobile>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from 'react';
 const CheckCalc = () => {
   const [saveValue, setSaveValue] = useState(20); // Initial value set to the min value of the slider
@@ -10,69 +10,49 @@ const CheckCalc = () => {
   const [data, setData] = useState(null);
   const [amountSaved, setAmountSaved] = useState(0);
   const [amountInvested, setAmountInvested] = useState(0);
-  const [userAccount, setUserAccount] = useState(localStorage.getItem('user'));
-  // Event handler for the 'Save' slider'
 
 
-  useEffect(() => {
-    // Function to fetch latest data
-    const fetchLatestData = async () => {
-      const userAccount = localStorage.getItem('user');
-      if (!userAccount) {
-        console.error('User account not found in localStorage');
-        return;
-      }
-      // setUserAccount(currentUser)
-      try {
-        const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent({finAccount:userAccount})}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch latest data, status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data)
-        console.log(data.finAccount)
-        setAmountSaved(data.amountSaved);
-        setAmountInvested(data.amountInvested);
-      } catch (error) {
-        console.error('Error fetching latest data:', error);
-      }
-    };
-
+  useEffect(() => {   
+      // Function to fetch latest data
+      const fetchLatestData = async () => {
+        const Token = localStorage.getItem('token'); 
+          if (Token) {
+            try {
+              const decoded = jwtDecode(Token); 
+              const username = decoded.userId_name.name
+              console.log(username)
+              const response = await fetch(`/api/account?type=financialDetails&userId=${encodeURIComponent(username)}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+              });
+              if (!response.ok) {
+                throw new Error(`Failed to fetch latest data, status: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data)
+             
+              setAmountSaved(data.amountSaved);
+              setAmountInvested(data.amountInvested);
+            } catch (error) {
+              console.error('Error decoding token:', error);
+            }
+      };
+  
+    }
     fetchLatestData();
 
     // Polling for real-time updates
     const intervalId = setInterval(fetchLatestData, 5000); // Adjust the interval as needed
-
     // Cleanup on unmount
     return () => clearInterval(intervalId);
-  }, []); // Ensure useEffect has no dependencies unless necessary
+}, []); // Ensure useEffect has no dependencies unless necessary
 
-  useEffect(() => {
-    const handleStorageChange = (e) => {
+
+
+
   
-      setUserAccount(localStorage.getItem('user'));
-    
-    };
-  
-    // window.addEventListener('storage', handleStorageChange);
-  
-    // return () => {
-    //   window.removeEventListener('storage', handleStorageChange);
-    // };
-  
-    handleStorageChange();
-  
-      // Polling for real-time updates
-      const intervalId = setInterval(handleStorageChange, 3000); // Adjust the interval as needed
-  
-      // Cleanup on unmount
-      return () => clearInterval(intervalId);
-  }, []);
+
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -110,8 +90,8 @@ const CheckCalc = () => {
     
 
    const postData = {
-    amountSaved: savingAmount +  amountSaved,
-    amountInvested:investmentAmount + amountInvested,
+    amountSaved:  amountSaved,
+    amountInvested: amountInvested,
     finAccount:userAccount,
        formType:'userMoney',
    }
