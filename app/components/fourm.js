@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify'; // Import DOMPurify for sanitizing HTML
 export const Fourm = () => {
 
 
-  const [userAccountPost, setUserAccountPost] = useState(localStorage.getItem('user'));
+  const [userAccountPost, setUserAccountPost] = useState('');
 
 const [formData,setFormData] = useState({
   postBody:"",
@@ -51,8 +51,8 @@ const makeLinksClickable = (text) => {
 
 
 useEffect(() => {
-  const handleStorageChange = (e) => {
-
+  if (typeof window !== "undefined") {
+  const handleStorageChange = () => {
     try {
       const Token = localStorage.getItem('token');
       if (Token) { // Check if Token exists
@@ -73,6 +73,7 @@ useEffect(() => {
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);
+}
 }, []);
 
 // Update formData when userAccountPost changes

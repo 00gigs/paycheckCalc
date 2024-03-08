@@ -14,6 +14,7 @@ const CheckCalc = () => {
 
 
   useEffect(() => {   
+    if (typeof window !== "undefined") { 
       // Function to fetch latest data
       const fetchLatestData = async () => {
         //GETS CURRENT USER FROM TOKEN STORAGE
@@ -49,6 +50,7 @@ const CheckCalc = () => {
     const intervalId = setInterval(fetchLatestData, 50000); // REFRESH EVERY interval
     // Cleanup on unmount
     return () => clearInterval(intervalId);
+  }
 }, []); // Ensure useEffect has no dependencies unless necessary
 
 
@@ -129,7 +131,7 @@ const Calculate = async () => {
     setFunValue(5);
 
 
-
+    if (typeof window !== "undefined") { 
     const Token2 = localStorage.getItem('token'); 
     if (Token2) {
       try {
@@ -143,11 +145,7 @@ const Calculate = async () => {
         throw new Error('failed to get user',error)
       }
     }
-    
-   
-
-  
-
+  }
   }
     //use  a onSubmission inside of calculate button to be able to store
     // (savingAmount) & (investmentAmount) data in a form to be submitted as POST request in [route.js]file

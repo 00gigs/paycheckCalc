@@ -62,11 +62,15 @@ you can use useState and form as const
 
     const data = await res.json();
 
+  
+
     router.refresh();
     router.push("/");
+    if (typeof window !== "undefined") {
     localStorage.setItem('token', data.token);
     console.log(localStorage.getItem('token'))
     window.dispatchEvent(new Event('tokenChanged'));
+    }
   };
 
   return (

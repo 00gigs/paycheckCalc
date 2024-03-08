@@ -12,6 +12,7 @@ const Advice = () => {
     const [username, setUsername] = useState('');
 
 useEffect(() => {
+    if (typeof window !== "undefined") {
     const users = () =>{
         try {
             const Token3 = localStorage.getItem('token'); 
@@ -30,12 +31,13 @@ useEffect(() => {
                 console.log('Error decoding token || no Signed in user');
               }
     }
-
+    
     users()
 
     const intervalId = setInterval(users, 5000); // REFRESH EVERY interval
     // Cleanup on unmount
     return () => clearInterval(intervalId);
+}
 }, [])
 
 

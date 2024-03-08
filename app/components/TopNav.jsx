@@ -18,7 +18,7 @@ const TopNav = () => {
   useEffect(() => {
 
    function retrieval(){
-     
+    if (typeof window !== "undefined") {
      const token = localStorage.getItem('token'); 
      if (token) {
        try {
@@ -29,8 +29,9 @@ const TopNav = () => {
          console.error('Error decoding token:', error);
        }
      }
- 
+    }
    }
+   retrieval()
     const intervalId = setInterval(retrieval, 300); // Adjust the interval as needed
 
     // Cleanup on unmount
@@ -46,7 +47,10 @@ const TopNav = () => {
 
 
 const logoutUser = () => {
-  localStorage.clear(); // Remove the token
+  if (typeof window !== "undefined") {
+  localStorage.clear();
+  }
+   // Remove the token
   setUsername(null); // Reset username to update UI
   // Optionally, redirect the user or perform additional cleanup
 router.push("/Signin")
