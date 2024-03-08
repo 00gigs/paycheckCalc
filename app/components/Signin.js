@@ -64,13 +64,13 @@ you can use useState and form as const
 
   
 
+    if (typeof window !== "undefined") {
+      localStorage.setItem('token', data.token);
+      console.log(localStorage.getItem('token'))
+      window.dispatchEvent(new Event('tokenChanged'));
+    }
     router.refresh();
     router.push("/");
-    if (typeof window !== "undefined") {
-    localStorage.setItem('token', data.token);
-    console.log(localStorage.getItem('token'))
-    window.dispatchEvent(new Event('tokenChanged'));
-    }
   };
 
   return (
