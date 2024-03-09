@@ -1,142 +1,90 @@
-import account from "@/app/(models)/user";
-import post from "../../(models)/posts";
-import { NextResponse } from "next/server";
+// Import necessary libraries and models
+import account from "@/app/models/user";
+import post from "../../models/posts";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import moneyinfo from "@/app/(models)/money";
+import moneyinfo from "@/app/models/money";
 
+// Helper function to handle responses
+const handleResponse = (res, status, data) => {
+  res.status(status).json(data);
+};
 
-// export async function account(req){
-//     // console.log('POST RAN')
-// //use  different model methods for different forms
-//     try {
-//         const body = await req.json()
-//         const accountData = body
-//         await account.create(accountData)
-//         return NextResponse.json({message:'user created',},{status:201})
-//     } catch (error) {
-//         return NextResponse.json({message:'error',error},{status:500})
-//     }
-// }
-
-export async function POST(req) {
-  console.log("POST RAN");
-  //use switch cases  by passing the 'formtype' name property through case
-  //and destructuring the body request to access multiple form names  to use
-  //different model methods representing  different forms
+export default async function handler(req, res) {
+  const { method } = req;
+  
   try {
-    const body = await req.json();
-    switch (body.formType) {
-      case "forumPost":
-        const newPost = await post.create(body);
-        return NextResponse.json(
-          { message: `Post made successfully`, newPost },
-          { status: 201 }
-        );
-      case "user":
-        const hashed = await bcryptjs.hash(body.password, 10);
-        const newAccount = await account.create({ ...body, password: hashed });
-        return NextResponse.json(
-          { message: `account made successfully${newAccount}` },
-          { status: 201 }
-        );
-      case "userMoney":
-        try {
+    if (method === "POST") {
+      const body = await req.json();
+      switch (body.formType) {
+        case "forumPost":
+          const newPost = await post.create(body);
+          handleResponse(res, 201, { message: "Post made successfully", newPost });
+          break;
+        case "user":
+          const hashedPassword = await bcryptjs.hash(body.password, 10);
+          const newAccount = await account.create({ ...body, password: hashedPassword });
+          handleResponse(res, 201, { message: "Account created successfully", newAccount });
+          break;
+        case "userMoney":
           const moneyEntry = await moneyinfo.create(body);
-          console.log("money entry:", moneyEntry);
-          console.log("moneyBody:", body);
-
-          return NextResponse.json(
-            { message: `savings/invesment  information ${moneyEntry}` },
-            { status: 201 }
-          );
-        } catch (dbError) {
-          console.error("Error creating money entry:", dbError);
-          return NextResponse.json(
-            {
-              message: "error",
-              error: dbError.message || "Database operation failed",
-            },
-            { status: 500 }
-          );
-        }
-
-      case "login":
-        try {
+          handleResponse(res, 201, { message: "Savings/investment information added", moneyEntry });
+          break;
+        case "login":
           const user = await account.findOne({ email: body.email });
           if (!user) {
-            return NextResponse.json(
-              { message: "User not found" },
-              { status: 404 },
-              alert('wrong creditials please try again or sign up')
-            );
+            return handleResponse(res, 404, { message: "User not found" });
           }
-          const match = await bcryptjs.compare(body.password, user.password);
-          if (!match) {
-            return NextResponse.json(
-              { message: "Invalid email or password" },
-              { status: 401 }
-            );
+          const isMatch = await bcryptjs.compare(body.password, user.password);
+          if (!isMatch) {
+            return handleResponse(res, 401, { message: "Invalid email or password" });
           }
-          const token = jwt.sign(
-            { userId_name: user },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: "1h" }
-          );
-          return NextResponse.json(
-            { message: "Login successful", token },
-            { status: 200 }
-          );
-        } catch (error) {
-          console.error(error); // Log the error for better debugging.
-          return NextResponse.json(
-            { message: "Login process failed", error: error.message },
-            { status: 500 }
-          );
-        }
+          const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+          handleResponse(res, 200, { message: "Login successful", token });
+          break;
+        default:
+          handleResponse(res, 400, { message: "Invalid form type" });
+      }
+    } else if (method === "GET") {
+      const url = new URL(req.url);
+      const type = url.searchParams.get('type');
+      switch (type) {
+        case 'posts':
+          const posts = await post.find().sort({ createdAt: -1 });
+          handleResponse(res, 200, posts);
+          break;
+        case 'financialDetails':
+          const userId = url.searchParams.get('userId');
+          const financialDetails = await moneyinfo.findOne({ finAccount: userId }).sort({ createdAt: -1 });
+          if (!financialDetails) {
+            return handleResponse(res, 404, { message: "Financial details not found" });
+          }
+          handleResponse(res, 200, financialDetails);
+          break;
+        default:
+          handleResponse(res, 400, { message: "Invalid request type" });
+      }
+    } else if (method === "DELETE") {
+      // Assuming 'type' parameter is passed to identify deletion context
+      const url = new URL(req.url);
+      const type = url.searchParams.get('type');
+      switch (type) {
+        case 'financialDetails':
+          const userId = url.searchParams.get('userId');
+          // Perform delete operation here, for example, to delete financial details
+          // Adjust the query as per your requirements
+          await moneyinfo.deleteOne({ finAccount: userId });
+          handleResponse(res, 200, { message: "Financial details deleted successfully" });
+          break;
+        default:
+          handleResponse(res, 400, { message: "Invalid delete operation" });
+      }
+    } else {
+      res.setHeader('Allow', ['POST', 'GET', 'DELETE']);
+      handleResponse(res, 405, { message: `Method ${method} Not Allowed` });
     }
   } catch (error) {
-    return NextResponse.json({ message: "error", error }, { status: 500 });
+    console.error("Server error:", error);
+    handleResponse(res, 500, { message: "Server error", error: error.message });
   }
 }
-
-export async function GET(req) {
-  
-  const url = new URL(req.url);
-  // Extract query parameters from the request URL
-  const type = url.searchParams.get('type');
-
-
-
-  try {
-    switch (type) {
-      case 'posts':
-        // Handling GET requests for posts
-        const posts = await post.find().sort({createdAt: -1}); // Assuming there's a createdAt field for sorting
-        console.log(JSON.stringify(posts, null, 2));
-        return NextResponse.json(posts, { status: 200 });
-
-      case 'financialDetails':
-      //👇🏻GETS CURRENT USER 
-     const user =   url.searchParams.get('userId')
-       
-const financialDetails = await moneyinfo.findOne({finAccount:user}).sort({createdAt: -1});
-   
-        if (!financialDetails) {
-          return NextResponse.json({ message: "Financial details not found" }, { status: 404 });
-        }
-        return NextResponse.json(financialDetails, { status: 200 });
-
-      default:
-        return NextResponse.json({ message: "Invalid request type" }, { status: 400 });
-    }
-  } catch (error) {
-    console.error("Error in GET:", error);
-    return NextResponse.json({ message: "error", error: error.message }, { status: 500 });
-  }
-}
-
-
-
-
-//make a line of code that queries a delete for when a user clears the amounts in the database.
