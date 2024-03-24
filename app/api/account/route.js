@@ -145,3 +145,23 @@ return NextResponse.json({ message: "error", error: error.message }, { status: 5
 }
 
 //make a line of code that queries a delete for when a user clears the amounts in the database.
+
+
+export async function DELETE(req){
+  const url = new URL(req.url)
+  const type = url.searchParams.get('type')
+  try {
+    switch(type){
+      case 'clear':
+        const user =   url.searchParams.get('userId')
+        const deleteAmounts = await moneyinfo.deleteMany({finAccount:user})
+    if(!user){
+      return NextResponse.json({message:'no user!'},{status:403})
+    }
+    return NextResponse.json(deleteAmounts,{status:200})
+    }
+  } catch (error) {
+    console.error("Error in DELETE:", error);
+    return NextResponse.json({message:'error',error:error.message},{status:500})
+  }
+  }

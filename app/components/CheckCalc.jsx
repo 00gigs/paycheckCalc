@@ -152,13 +152,34 @@ const Calculate = async () => {
     //ALSO make a mongoose model schema in the {models} folder for the (savingAmount) & (investmentAmount)
     //to be used in the [route.js]file 
   ;
+
+  //delete handle 
+const deleteAmounts = async ()=>{
+  try {
+    const res = await fetch(`https://smartsave.onrender.com/api/account?type=clear&userId=${encodeURIComponent(username)}`,{
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json",
+      "Accept": "application/json", // Indicate that you expect JSON in response
+      "Authorization": `Bearer ${process.env.NEXT_PUBLIC_RENDER_KEY}` },
+    })
+    if(!res.ok){
+     throw new Error('failed to delete')
+    }
+    console.log('success during deletion !')
+  } catch (error) {
+    console.log('error deleting amount info',error)
+  }
+  
+  }
+
   {/*set amounts 
   //fetch a http post req body
   //fetch  a http get req to get the total amount for each user and render dynamic account
   */}
   const ClearTotals = () => {
-    setAmountSaved(0);
-    setAmountInvested(0);
+    deleteAmounts()
+    setAmountSaved(0)
+setAmountInvested(0)
   };  
   return (
     <div className="flex justify-center w-full mt-2 mb-3">
