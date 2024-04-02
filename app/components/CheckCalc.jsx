@@ -156,7 +156,7 @@ const Calculate = async () => {
   //delete handle 
 const deleteAmounts = async ()=>{
   try {
-    const res = await fetch(`https://smartsave.onrender.com/api/account?type=clear&userId=${encodeURIComponent(username)}`,{
+    const res = await fetch(`/api/account?type=clear&userId=${encodeURIComponent(username)}`,{
       method: 'DELETE',
       headers: { "Content-Type": "application/json",
       "Accept": "application/json", // Indicate that you expect JSON in response
